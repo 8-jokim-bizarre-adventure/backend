@@ -1,18 +1,15 @@
 package com.jokim.sivillage.api.customer.application;
 
+import com.jokim.sivillage.api.customer.domain.Customer;
 import com.jokim.sivillage.api.customer.dto.in.*;
-import com.jokim.sivillage.api.customer.dto.out.OauthSignUpResponseDto;
 import com.jokim.sivillage.api.customer.dto.out.SignInResponseDto;
+import java.util.Optional;
 
 public interface CustomerService {
 
-    void signUp(SignUpDto signUpDto);
+    void signUp(SignUpRequestDto signUpRequestDto);
 
     SignInResponseDto signIn(SignInRequestDto signInRequestDto);
-
-    OauthSignUpResponseDto oauthSignUp(OauthSignUpDto oauthSignUpDto);
-
-    SignInResponseDto oauthpolicySignUp(OauthSignUpPolicyDto oauthSignUpPolicyDto);
 
     SignInResponseDto oauthSignIn(OauthSignInRequestDto oauthSignInRequestDto);
 
@@ -20,5 +17,5 @@ public interface CustomerService {
 
     void logout(String accessToken);
 
-
+    Optional<Customer> findUserByEmail(String email);
 }

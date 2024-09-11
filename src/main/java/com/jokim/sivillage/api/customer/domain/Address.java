@@ -15,6 +15,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String addressCode;
     private String addressName;
     private String recipient;
     private String phone;
@@ -23,12 +24,13 @@ public class Address {
     private String addressDetail;
     private String message;
 
-    @OneToOne(mappedBy = "address")
+    @ManyToOne
     private DefaultAddress defaultAddress;
 
     @Builder
     public Address(
         Long id,
+        String addressCode,
         String addressName,
         String recipient,
         String phone,
@@ -38,6 +40,7 @@ public class Address {
         String message
     ) {
         this.id = id;
+        this.addressCode = addressCode;
         this.addressName = addressName;
         this.recipient = recipient;
         this.phone = phone;

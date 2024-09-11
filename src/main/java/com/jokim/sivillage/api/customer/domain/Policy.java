@@ -8,7 +8,6 @@ import lombok.ToString;
 
 @Getter
 @Entity(name = "policy")
-@Builder
 @ToString
 @NoArgsConstructor
 public class Policy {
@@ -17,33 +16,35 @@ public class Policy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Boolean essential1;
-    @Column(nullable = false)
-    private Boolean essential2;
-    @Column(nullable = false)
-    private Boolean essential3;
+    @Column(nullable = false, length = 36)
+    private String uuid;
 
-    private Boolean optional;
+    @Column(nullable = false)
+    private Boolean webUsageRight;
 
-    @OneToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @Column(nullable = false)
+    private Boolean integratedMemberRight;
+
+    @Column(nullable = false)
+    private Boolean infoUsageRight;
+
+    @Column(nullable = false)
+    private Boolean tomboyInfoUsageRight;
 
     @Builder
     public Policy(
         Long id,
-        Boolean essential1,
-        Boolean essential2,
-        Boolean essential3,
-        Boolean optional,
-        Customer customer
+        String uuid,
+        Boolean webUsageRight,
+        Boolean integratedMemberRight,
+        Boolean infoUsageRight,
+        Boolean tomboyInfoUsageRight
     ) {
         this.id = id;
-        this.essential1 = essential1;
-        this.essential2 = essential2;
-        this.essential3 = essential3;
-        this.optional = optional;
-        this.customer = customer;
+        this.uuid = uuid;
+        this.webUsageRight = webUsageRight;
+        this.integratedMemberRight = integratedMemberRight;
+        this.infoUsageRight = infoUsageRight;
+        this.tomboyInfoUsageRight = tomboyInfoUsageRight;
     }
 }

@@ -8,7 +8,6 @@ import lombok.ToString;
 
 @Getter
 @Entity(name = "marketing")
-@Builder
 @ToString
 @NoArgsConstructor
 public class Marketing {
@@ -16,31 +15,33 @@ public class Marketing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, length = 36)
+    private String uuid;
+    @Column(nullable = false)
+    private Boolean smsAgreement;
+    @Column(nullable = false)
+    private Boolean emailAgreement;
+    @Column(nullable = false)
+    private Boolean dmAgreement;
+    @Column(nullable = false)
+    private Boolean callAgreement;
 
-    private Boolean marketingSms;
-    private Boolean marketingEmail;
-    private Boolean marketingDm;
-    private Boolean marketingCall;
-
-    @OneToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
 
     @Builder
     public Marketing(
         Long id,
-        Boolean marketingSms,
-        Boolean marketingEmail,
-        Boolean marketingDm,
-        Boolean marketingCall,
-        Customer customer
+        String uuid,
+        Boolean smsAgreement,
+        Boolean emailAgreement,
+        Boolean dmAgreement,
+        Boolean callAgreement
     ) {
         this.id = id;
-        this.marketingSms = marketingSms;
-        this.marketingEmail = marketingEmail;
-        this.marketingDm = marketingDm;
-        this.marketingCall = marketingCall;
-        this.customer = customer;
+        this.uuid = uuid;
+        this.smsAgreement = smsAgreement;
+        this.emailAgreement = emailAgreement;
+        this.dmAgreement = dmAgreement;
+        this.callAgreement = callAgreement;
     }
 
 }
