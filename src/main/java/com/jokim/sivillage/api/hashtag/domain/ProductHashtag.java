@@ -1,6 +1,6 @@
-package com.jokim.sivillage.api.product.domain;
+package com.jokim.sivillage.api.hashtag.domain;
 
-import com.jokim.sivillage.api.domain.Hashtag;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,13 +8,13 @@ public class ProductHashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productHashtagId;
-
-    @ManyToOne
-    private Product product;
+    private Long id;
 
     @OneToOne
+    @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 
+    @Column(nullable = false, length = 36)
+    private String productCode;
 
 }

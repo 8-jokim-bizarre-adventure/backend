@@ -9,5 +9,5 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     Optional<Brand> findByMainName(String mainName);
 
-    
+    Optional<Brand> findByBrandCode(String brandCode);
 }

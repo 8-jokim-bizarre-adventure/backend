@@ -1,7 +1,9 @@
 package com.jokim.sivillage.api.product.dto.out;
 
-import com.jokim.sivillage.api.brand.Brand;
+import com.jokim.sivillage.api.hashtag.domain.Hashtag;
 import com.jokim.sivillage.api.product.vo.out.ProductResponseVo;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,20 +13,31 @@ import lombok.ToString;
 @Getter
 public class ProductResponseDto {
 
-    private Long productId;
-    private Brand brand;
+    private String productCode;
+    private String imageUrl;
+    private String brandName;
     private String productName;
-    private boolean isOnSale;
-    private String detail;
+    private String discountRate;
+    private Double amount;
     private Double price;
+    private String starPoint;
+    private Integer reviewCount;
+    private List<Map<String, Object>> hashTag;
+    private String detail;
 
     public ProductResponseVo toResponseVo() {
         return ProductResponseVo.builder()
-            .id(productId)
-            .brandName(brand.getMainName())
-            .productName(productName) // TODO .discountRate() 필요없을 시
-            .detail(detail)
+            .productCode(productCode)
+            .imageUrl(imageUrl)
+            .brandName(brandName)
+            .productName(productName)
+            .discountRate(discountRate)
+            .amount(amount)
             .price(price)
+            .starPoint(starPoint)
+            .reviewCount(reviewCount)
+            .hashTag(hashTag)
+            .detail(detail)
             .build();
     }
 

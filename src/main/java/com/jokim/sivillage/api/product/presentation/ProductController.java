@@ -26,12 +26,13 @@ public class ProductController {
     private final ProductService productService;
 
     // 상품 데이터 보기
-    @GetMapping("/products/{productId}")
-    public ResponseEntity<ProductResponseVo> getProduct(@PathVariable Long productId) {
-        log.info("productId : {}", productId);
-        ProductResponseDto productResponseDto = productService.getProductById(productId);
+    @GetMapping("/products/{productCode}")
+    public ResponseEntity<ProductResponseVo> getProduct(@PathVariable String productCode) {
+        log.info("productCoded : {}", productCode);
+        ProductResponseDto productResponseDto = productService.getProductByProductCode(productCode);
         log.info("productResponseDto : {}", productResponseDto.toString());
         return ResponseEntity.ok(productResponseDto.toResponseVo());
+        // TODO hashtag sql 문 작성
     }
 
     // 상품 데이터 입력

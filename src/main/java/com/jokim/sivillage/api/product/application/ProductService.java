@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    ProductResponseDto getProductById(long id);
+    ProductResponseDto getProductByProductCode(String productCode);
 
     void saveProduct(ProductRequestDto productRequestDto);
 

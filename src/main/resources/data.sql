@@ -1,39 +1,54 @@
 INSERT INTO `sivillage`.`brand`
-(`brand_id`,
+(`brand_code`,
  `main_name`,
- `sub_name`,
- `badge_image`)
-VALUES (1,
+ `sub_name`)
+VALUES ("b123",
         "main1",
-        "sub1",
-        "www.image.com");
+        "sub1");
 
 INSERT INTO `sivillage`.`product`
-(`is_on_sale`,
- `price`,
- `brand_id`,
+(`product_code`,
+ `brand_code`,
+ `product_name`,
+ `is_on_sale`,
  `detail`,
- `product_name`)
-VALUES (true,
-        36000,
-        1,
-        "좋은 상품입니다",
-        "쉐보레");
+ `standard_price`)
+VALUES ("a123",
+        "b123",
+        "쉐보레",
+        true,
+        "좋은상품입니다.",
+        36000);
 
-
-
-INSERT INTO `sivillage`.`color`
+INSERT INTO `sivillage`.`hashtag`
     (`value`)
-VALUES ("실버");
+VALUES ("가을에 어울려요");
 
-INSERT INTO `sivillage`.`size`
+INSERT INTO `sivillage`.`hashtag`
     (`value`)
-VALUES ("FREE");
+VALUES ("겨울에 어울려요");
 
-INSERT INTO `sivillage`.`etc`
-(`name`,
- `value`)
-VALUES ("소재",
-        "소가죽");
+INSERT INTO `sivillage`.`product_hashtag`
+(`hashtag_id`,
+ `product_code`)
+VALUES ("1",
+        "a123");
+
+--
+--
+--
+-- INSERT INTO `sivillage`.`color`
+--     (`value`)
+-- VALUES ("실버");
+--
+-- INSERT INTO `sivillage`.`size`
+--     (`value`)
+-- VALUES ("FREE");
+--
+-- INSERT INTO `sivillage`.`etc`
+-- (`name`,
+--  `value`)
+-- VALUES ("소재",
+--         "소가죽");
 
 

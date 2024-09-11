@@ -3,6 +3,9 @@ package com.jokim.sivillage.api.product.application;
 
 import com.jokim.sivillage.api.brand.domain.Brand;
 import com.jokim.sivillage.api.brand.infrastructure.BrandRepository;
+import com.jokim.sivillage.api.hashtag.domain.Hashtag;
+import com.jokim.sivillage.api.hashtag.infrastructure.HashtagRepository;
+import com.jokim.sivillage.api.hashtag.infrastructure.ProductHashtagRepositoryCustom;
 import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
 import com.jokim.sivillage.api.product.dto.out.DailyHotProductResponseDto;
 import com.jokim.sivillage.api.product.domain.Product;
@@ -10,6 +13,9 @@ import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +33,50 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
+    private final HashtagRepository hashtagRepository;
+    private final ProductHashtagRepositoryCustom productHashtagRepositoryCustom;
 
     @Override
-    public ProductResponseDto getProductById(long id) {
+    public ProductResponseDto getProductByProductCode(String productCode) {
 
-        Product product = productRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + id));
+        // == Product ==
+        Product product = productRepository.findByProductCode(productCode)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "Product not found with productCode: " + productCode));
+
+        // brandName 얻기
+        String brandCode = product.getBrandCode();
+        Brand brand = brandRepository.findByBrandCode(brandCode)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "Brand not found with brandCode: " + brandCode));
+        String brandName = brand.getMainName();
+
+        // HashTagList 얻기
+//        List<Hashtag> hashtags = hashtagRepository.findByProductCode(productCode)
+//            .orElseThrow(() -> new EntityNotFoundException(
+//                "Hashtag not found with productCode: " + productCode));
+        List<Hashtag> hashtags = productHashtagRepositoryCustom.findHashtagsByProductCode(
+                productCode)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "Product hashtags not found with productCode: " + productCode
+            ));
+
+        List<Map<String, Object>> hashtagList = hashtags.stream().map(hashtag -> {
+            Map<String, Object> ht = new HashMap<String, Object>();
+            ht.put("hashtagId", hashtag.getId());
+            ht.put("value", hashtag.getValue());
+            return ht;
+        }).toList();
+        log.info("hashtagList: {}", hashtagList.toString());
+
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(product, ProductResponseDto.class);
+        ProductResponseDto productResponseDto
+            = modelMapper.map(product, ProductResponseDto.class);
+
+        productResponseDto.setBrandName(brandName);
+        productResponseDto.setHashTag(hashtagList);
+
+        return productResponseDto;
     }
 
     @Override
