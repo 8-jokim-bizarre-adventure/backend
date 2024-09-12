@@ -8,6 +8,7 @@ import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.vo.in.ProductRequestVo;
 import com.jokim.sivillage.api.product.vo.in.UpdateProductRequestVo;
 import com.jokim.sivillage.api.product.vo.out.ProductResponseVo;
+import com.jokim.sivillage.common.entity.BaseResponse;
 import com.jokim.sivillage.common.entity.CommonResponseEntity;
 import java.util.Collections;
 import java.util.stream.Collector;
@@ -29,18 +30,20 @@ public class ProductController {
 
     private final ProductService productService;
 
+
     // 상품 데이터 보기
     @GetMapping("/products/{productCode}")
-    public ResponseEntity<ProductResponseVo> getProduct(@PathVariable String productCode) {
+    public BaseResponse<ProductResponseVo> getProduct(@PathVariable String productCode) {
         log.info("productCoded : {}", productCode);
         ProductResponseDto productResponseDto = productService.getProductByProductCode(productCode);
         log.info("productResponseDto : {}", productResponseDto.toString());
-        return ResponseEntity.ok(productResponseDto.toResponseVo());
+        ProductResponseVo productResponseVo = productResponseDto.toResponseVo();
+        return new BaseResponse(productResponseVo);
     }
 
     // 상품 데이터 입력
     @PostMapping("/products")
-    public CommonResponseEntity<Void> createProduct(
+    public BaseResponse<Void> createProduct(
         @RequestBody ProductRequestVo productRequestVo) {
         log.info("productRequestVo : {}", productRequestVo.toString());
         ProductRequestDto productRequestDto = ProductRequestDto.builder()
@@ -53,16 +56,12 @@ public class ProductController {
 
         productService.saveProduct(productRequestDto);
 
-        return new CommonResponseEntity<>(
-            HttpStatus.OK,
-            "상품 등록 성공",
-            null
-        );
+        return new BaseResponse<>();
     }
 
     // 상품 업데이트 하기
     @PutMapping("/products")
-    public CommonResponseEntity<Void> updateProduct(
+    public BaseResponse<Void> updateProduct(
         @RequestBody UpdateProductRequestVo updateProductRequestVo) {
         log.info("productRequestVo : {}", updateProductRequestVo.toString());
 
@@ -77,17 +76,13 @@ public class ProductController {
 
         productService.updateProduct(productRequestDto.getProductCode(), productRequestDto);
 
-        return new CommonResponseEntity<>(
-            HttpStatus.OK,
-            "상품 변경 성공",
-            null
-        );
+        return new BaseResponse<>();
     }
 
 
     // 옵션 별  필터링 된 상품 보기
-    @GetMapping("products/options")
-    public ResponseEntity<List<ProductResponseVo>> getFilteredProduct(
+    @GetMapping("/products/options")
+    public BaseResponse<List<ProductResponseVo>> getFilteredProduct(
         @RequestParam(value = "size-id") Long sizeId,
         @RequestParam(value = "color-id") Long colorId,
         @RequestParam(value = "etc-id") Long etcId) {
@@ -105,8 +100,11 @@ public class ProductController {
         List<ProductResponseVo> productResponseVo = productResponseDto.stream()
             .map(ProductResponseDto::toResponseVo).toList();
         log.info("productResponseVo : {}", productResponseVo.toString());
-        return ResponseEntity.ok(productResponseVo);
+        return new BaseResponse<>(productResponseVo);
     }
+
+//    // 전체상품보기(카테고리) 20
+//    @GetMapping("/products")
 
     // 랜덤 상품 리스트 보기
 //    @GetMapping("/main/random-product")
