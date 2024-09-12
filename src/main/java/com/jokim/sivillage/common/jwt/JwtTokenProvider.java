@@ -48,6 +48,7 @@ public class JwtTokenProvider {
     public String validateAndGetUserUuid(String token) throws BaseException {
         try {
             log.info(extractClaim(token, Claims::getSubject));
+
             return null;
         } catch (NullPointerException e) {
             log.info("토큰에 담긴 유저 정보가 없습니다");
@@ -77,6 +78,10 @@ public class JwtTokenProvider {
     private Claims extractAllClaims(String token) {
         log.info("extractAllClaims token={}", token);
         try {
+            if (token == null || token.isEmpty()) {
+                throw new BaseException(BaseResponseStatus.WRONG_JWT_TOKEN);
+            }
+
             return Jwts
                 .parser()
                 .verifyWith((SecretKey) getSignKey())

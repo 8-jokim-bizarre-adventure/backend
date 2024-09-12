@@ -1,18 +1,25 @@
 package com.jokim.sivillage.api.customer.application;
 
 
+import com.jokim.sivillage.api.customer.dto.DuplicateEmailDto;
+import com.jokim.sivillage.api.customer.dto.RefreshTokenResponseDto;
 import com.jokim.sivillage.api.customer.entity.AuthUserDetail;
 import com.jokim.sivillage.common.entity.BaseResponseStatus;
 import com.jokim.sivillage.common.exception.BaseException;
 import com.jokim.sivillage.common.jwt.JwtTokenProvider;
+import com.jokim.sivillage.common.redis.TokenBlacklistRepository;
 import com.jokim.sivillage.common.redis.TokenRedis;
 import com.jokim.sivillage.common.redis.TokenRedisRepository;
 import com.jokim.sivillage.api.customer.domain.*;
 import com.jokim.sivillage.api.customer.dto.in.*;
 import com.jokim.sivillage.api.customer.dto.out.SignInResponseDto;
 import com.jokim.sivillage.api.customer.infrastructure.*;
+import io.jsonwebtoken.Jwts;
 import jakarta.transaction.Transactional;
+import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     //redis
     private final TokenRedisRepository tokenRedisRepository;
+    private final TokenBlacklistRepository tokenBlacklistRepository;
 
 
     //이메일 중복 체크
@@ -52,6 +60,16 @@ public class CustomerServiceImpl implements CustomerService {
     public Optional<Customer> findUserByEmail(String email) {
         return customerRepository.findByEmail(email);
     }
+
+    @Override
+    public void duplicateEmail(DuplicateEmailDto duplicateEmailDto) {
+        Customer customer = findUserByEmail(duplicateEmailDto.getEmail()).orElse(null);
+
+        if (customer != null) {
+            throw new BaseException(BaseResponseStatus.DUPLICATED_EMAIL);
+        }
+    }
+
 
     @Override
     @Transactional
@@ -134,20 +152,24 @@ public class CustomerServiceImpl implements CustomerService {
 
     //리프레시 토큰을 확인하여 accessToken 재발급
     @Override
-    public SignInResponseDto refreshAccessToken(String refreshToken) {
-        // Redis에서 refreshToken으로 사용자 정보 확인
-        TokenRedis tokenRedis = tokenRedisRepository.findByRefreshToken(refreshToken);
+    @Transactional
+    public RefreshTokenResponseDto refreshAccessToken(String refreshToken) {
+        log.info("refreshAccessToken 들어옴{}",refreshToken);
 
-        if (tokenRedis == null) {
-            throw new IllegalArgumentException("유효하지 않은 RefreshToken입니다.");
-        }
+        String uuid = Jwts.parser().verifyWith((SecretKey) jwtTokenProvider.getSignKey())
+            .build().parseSignedClaims(refreshToken).getPayload().get("uuid", String.class);
 
-        // refreshToken이 유효하다면 새로운 accessToken 생성
+        // Redis에서 리프레시 토큰 검증 //이게 왜 되지?
+        TokenRedis tokenRedis = tokenRedisRepository.findById(uuid)
+            .orElseThrow(() -> new BaseException(BaseResponseStatus.TOKEN_NOT_VALID));
+
+        log.info("tokenRedis값 제대로 오나?{}",tokenRedis);
+        // 리프레시 토큰이 유효하다면 새로운 액세스 토큰 생성
         String customerUuid = tokenRedis.getId();
 
         // Customer 객체를 principal로 사용하는 Authentication 생성
         Customer customer = customerRepository.findByUuid(customerUuid)
-            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+            .orElseThrow(() -> new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
             customer, null, customer.getAuthorities());
@@ -156,15 +178,37 @@ public class CustomerServiceImpl implements CustomerService {
         String newAccessToken = jwtTokenProvider.generateAccessToken(authentication);
 
         // 새로운 AccessToken 반환
-        return SignInResponseDto.toDto(newAccessToken,refreshToken);
+        return RefreshTokenResponseDto.toDto(newAccessToken);
     }
 
+
     @Override
+    @Transactional
     public void logout(String accessToken) {
-        // accessToken을 Redis에서 삭제
-        tokenRedisRepository.deleteByAccessToken(accessToken);
-        log.info("로그아웃 완료: accessToken {}", accessToken);
+        try {
+            // 액세스 토큰에서 UUID 추출
+            String uuid = Jwts.parser().verifyWith((SecretKey) jwtTokenProvider.getSignKey())
+                .build().parseSignedClaims(accessToken).getPayload().get("uuid", String.class);
+
+            // Redis에서 리프레시 토큰 삭제
+            tokenRedisRepository.deleteById(uuid);
+            log.info("UUID에 대한 리프레시 토큰을 제거했습니다: {}", uuid);
+
+            // Access Token의 남은 유효기간을 계산
+            Date expirationDate = Jwts.parser().verifyWith((SecretKey) jwtTokenProvider.getSignKey())
+                .build().parseSignedClaims(accessToken).getPayload().getExpiration();
+            long now = System.currentTimeMillis();
+            long timeToLive = expirationDate.getTime() - now;
+
+            // Access Token을 블랙리스트에 추가
+            tokenBlacklistRepository.saveBlacklistedToken(accessToken, timeToLive, TimeUnit.MILLISECONDS);
+
+        } catch (Exception e) {
+            log.error("로그아웃 중 오류 발생", e);
+            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     private Authentication authenticate(Customer customer, String inputPassword) {
         AuthUserDetail authUserDetail = new AuthUserDetail(customer);

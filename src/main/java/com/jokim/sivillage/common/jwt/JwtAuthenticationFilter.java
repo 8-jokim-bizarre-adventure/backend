@@ -1,6 +1,8 @@
 package com.jokim.sivillage.common.jwt;
 
 import com.jokim.sivillage.api.customer.application.AuthCustomerDetailService;
+import com.jokim.sivillage.common.redis.TokenBlacklistRepository;
+import com.jokim.sivillage.common.redis.TokenRedisRepository;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     //    todo JwtTokenProvider
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthCustomerDetailService userDetailsService;
-
+    private final TokenBlacklistRepository tokenBlacklistRepository;
     @Override
     protected void doFilterInternal(
         HttpServletRequest request,
@@ -35,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String uuid;
+        log.info("Authorization : {}" , authHeader);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -42,6 +45,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
+
+        // 블랙리스트에 있는 토큰인지 확인
+        if (tokenBlacklistRepository.isBlacklisted(jwt)) {
+            log.warn("블랙리스트에 있는 토큰: {}", jwt);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "블랙리스트에 있는 토큰입니다.");
+            return;
+        }
 
         uuid = Jwts.parser().verifyWith((SecretKey) jwtTokenProvider.getSignKey())
             .build().parseSignedClaims(jwt).getPayload().get("uuid", String.class);

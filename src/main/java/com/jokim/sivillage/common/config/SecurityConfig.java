@@ -48,13 +48,18 @@ public class SecurityConfig {
                     .requestMatchers(
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/api/v1/**",
+                        "/api/v1/auth/refresh",
+                        "/api/v1/auth/sign-in",
+                        "/api/v1/auth/sign-in/oauth",
+                        "/api/v1/auth/sign-up/simple",
+                        "/api/v1/auth/duplicateEmail",
                         "/error"
                     )
                     .permitAll()
                     .anyRequest()
                     .authenticated()
             )
+
             .sessionManagement(
                 sessionManagement -> sessionManagement
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

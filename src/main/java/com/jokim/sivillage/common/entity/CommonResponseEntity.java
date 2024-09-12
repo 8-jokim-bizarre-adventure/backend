@@ -12,6 +12,6 @@ public class CommonResponseEntity<T> {
 
     private HttpStatus status;
     private String message;
-    private T data;
+    private T result;
 
 }
