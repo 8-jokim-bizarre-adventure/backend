@@ -13,13 +13,16 @@ public interface ProductService {
 
     void saveProduct(ProductRequestDto productRequestDto);
 
-    ProductResponseDto updateProduct(String productCode, UpdateProductRequestDto productRequestDto);
+    void updateProduct(String productCode, UpdateProductRequestDto productRequestDto);
 
+    List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId);
+
+    List<ProductResponseDto> getProductsByCategory(Long categoryId);
 //    void deleteProduct(Long id);
 
     //    List<DailyHotProductResponseDto> getDailyHotProducts();
 //
-    List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId);
+
 //
 //    List<ProductResponseDto> getRandomProducts(Integer count);
 //

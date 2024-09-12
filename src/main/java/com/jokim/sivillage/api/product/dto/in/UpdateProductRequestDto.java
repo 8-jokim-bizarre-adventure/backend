@@ -15,10 +15,22 @@ public class UpdateProductRequestDto {
     private String detail;
     private Double standardPrice;
 
-    public Product toEntity(String brandCode) {
+    public Product toEntity(String brandCode, Long productId) {
         return Product.builder().
+            id(productId).
             productCode(productCode).
             brandCode(brandCode).
+            productName(productName).
+            isOnSale(isOnSale).
+            detail(detail).
+            standardPrice(standardPrice).
+            build();
+    }
+
+    public Product toEntity() {
+        return Product.builder().
+            productCode(productCode).
+            brandCode(brandName).
             productName(productName).
             isOnSale(isOnSale).
             detail(detail).

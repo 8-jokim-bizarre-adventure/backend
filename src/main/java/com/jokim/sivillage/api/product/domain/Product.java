@@ -1,6 +1,7 @@
 package com.jokim.sivillage.api.product.domain;
 
 
+import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +33,7 @@ public class Product {
     @Column(nullable = false)
     private Double standardPrice;
 
+//    public void update(UpdateProductRequestDto updateProductRequestDto) {
+////        this.brandCode = updateProductRequestDto.get
+//    }
 }

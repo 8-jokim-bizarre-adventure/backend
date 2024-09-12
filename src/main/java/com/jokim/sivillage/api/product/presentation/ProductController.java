@@ -8,8 +8,11 @@ import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.vo.in.ProductRequestVo;
 import com.jokim.sivillage.api.product.vo.in.UpdateProductRequestVo;
 import com.jokim.sivillage.api.product.vo.out.ProductResponseVo;
+import com.jokim.sivillage.common.entity.BaseEntity;
 import com.jokim.sivillage.common.entity.BaseResponse;
 import com.jokim.sivillage.common.entity.CommonResponseEntity;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Collections;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -26,12 +29,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "product-controller", description = "상품 관련 API")
 public class ProductController {
 
     private final ProductService productService;
 
 
     // 상품 데이터 보기
+    @Operation(summary = "상품 데이터 보기", description = "상품코드로 상품 데이터를 조회한다.")
     @GetMapping("/products/{productCode}")
     public BaseResponse<ProductResponseVo> getProduct(@PathVariable String productCode) {
         log.info("productCoded : {}", productCode);
@@ -60,6 +65,7 @@ public class ProductController {
     }
 
     // 상품 업데이트 하기
+    @Operation(summary = "상품 데이터 업데이트", description = "상품코드로 상품 데이터를 수정한다.")
     @PutMapping("/products")
     public BaseResponse<Void> updateProduct(
         @RequestBody UpdateProductRequestVo updateProductRequestVo) {
@@ -81,6 +87,7 @@ public class ProductController {
 
 
     // 옵션 별  필터링 된 상품 보기
+    @Operation
     @GetMapping("/products/options")
     public BaseResponse<List<ProductResponseVo>> getFilteredProduct(
         @RequestParam(value = "size-id") Long sizeId,
@@ -103,8 +110,17 @@ public class ProductController {
         return new BaseResponse<>(productResponseVo);
     }
 
-//    // 전체상품보기(카테고리) 20
+//    //  전체상품보기(카테고리) 20 => 규찬's
 //    @GetMapping("/products")
+//    public BaseResponse<List<ProductResponseVo>> getProductByCategory(
+//        @RequestParam(value = "category-id") Long categoryId) {
+//        log.info("categoryId : {}", categoryId);
+//        List<ProductResponseDto> productResponseDto = productService.getProductsByCategory(
+//            categoryId);
+//
+//        return new BaseResponse<>();
+//
+//    }
 
     // 랜덤 상품 리스트 보기
 //    @GetMapping("/main/random-product")

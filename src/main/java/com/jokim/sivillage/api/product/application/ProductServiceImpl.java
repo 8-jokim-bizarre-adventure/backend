@@ -118,19 +118,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponseDto updateProduct(String productCode,
+    public void updateProduct(String productCode,
         UpdateProductRequestDto updateproductRequestDto) {
-        Product product = productRepository.findByProductCode(productCode).get();
+        Product product = productRepository.findByProductCode(productCode).orElseThrow(
+            () -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.")
+        );
 
-//        UpdateProductRequestVo updateproductRequestVo = UpdateProductRequestVo
-
-        ModelMapper modelMapper = new ModelMapper();
-
-        modelMapper.map(updateproductRequestDto, product);
-
-        productRepository.save(product);
-
-        return null;
+        productRepository.save(updateproductRequestDto.toEntity(productCode, product.getId()));
     }
 
     // 옵션 별 상품 반환
@@ -148,6 +142,12 @@ public class ProductServiceImpl implements ProductService {
         log.info("productResponseDtos {}", productResponseDtos);
 
         return productResponseDtos;
+    }
+
+    @Override
+    public List<ProductResponseDto> getProductsByCategory(Long categoryId) {
+
+        return List.of();
     }
 
 //    @Override
