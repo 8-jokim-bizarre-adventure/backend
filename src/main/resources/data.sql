@@ -34,6 +34,37 @@ INSERT INTO `sivillage`.`product_hashtag`
 VALUES ("1",
         "a123");
 
+INSERT INTO `sivillage`.`size`
+    (`value`)
+VALUES ("big");
+
+INSERT INTO `sivillage`.`color`
+    (`value`)
+VALUES ("red");
+
+INSERT INTO `sivillage`.`etc`
+(`value`,
+ `name`)
+VALUES ("feathers",
+        "재질");
+
+INSERT INTO `sivillage`.`product_option`
+(`price`,
+ `stock`,
+ `color_id`,
+ `etc_id`,
+ `size_id`,
+ `product_code`,
+ `product_option_code`)
+VALUES (3600,
+        3,
+        1,
+        1,
+        1,
+        "a123",
+        "po123");
+
+
 --
 --
 --

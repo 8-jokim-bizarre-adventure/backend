@@ -5,16 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ProductRequestDto {
+public class UpdateProductRequestDto {
 
 
+    private String productCode;
     private String productName;
     private String brandName;
     private boolean isOnSale;
     private String detail;
     private Double standardPrice;
 
-    public Product toEntity(String productCode, String brandCode) {
+    public Product toEntity(String brandCode) {
         return Product.builder().
             productCode(productCode).
             brandCode(brandCode).
@@ -26,8 +27,9 @@ public class ProductRequestDto {
     }
 
     @Builder
-    public ProductRequestDto(String productName, String brandName,
+    public UpdateProductRequestDto(String productCode, String productName, String brandName,
         boolean isOnSale, String detail, Double standardPrice) {
+        this.productCode = productCode;
         this.productName = productName;
         this.brandName = brandName;
         this.isOnSale = isOnSale;
@@ -37,3 +39,4 @@ public class ProductRequestDto {
 
 
 }
+

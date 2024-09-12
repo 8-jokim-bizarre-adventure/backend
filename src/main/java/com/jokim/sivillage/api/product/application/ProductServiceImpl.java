@@ -7,10 +7,14 @@ import com.jokim.sivillage.api.hashtag.domain.Hashtag;
 import com.jokim.sivillage.api.hashtag.infrastructure.HashtagRepository;
 import com.jokim.sivillage.api.hashtag.infrastructure.ProductHashtagRepositoryCustom;
 import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
+import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
 import com.jokim.sivillage.api.product.dto.out.DailyHotProductResponseDto;
 import com.jokim.sivillage.api.product.domain.Product;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepository;
+import com.jokim.sivillage.api.product.infrastructure.ProductRepositoryCustom;
+import com.jokim.sivillage.api.product.vo.in.ProductRequestVo;
+import com.jokim.sivillage.api.product.vo.in.UpdateProductRequestVo;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
@@ -35,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
     private final BrandRepository brandRepository;
     private final HashtagRepository hashtagRepository;
     private final ProductHashtagRepositoryCustom productHashtagRepositoryCustom;
+    private final ProductRepositoryCustom productRepositoryCustom;
 
     @Override
     public ProductResponseDto getProductByProductCode(String productCode) {
@@ -113,15 +118,36 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto) {
-        Product product = productRepository.findById(id).get();
+    public ProductResponseDto updateProduct(String productCode,
+        UpdateProductRequestDto updateproductRequestDto) {
+        Product product = productRepository.findByProductCode(productCode).get();
+
+//        UpdateProductRequestVo updateproductRequestVo = UpdateProductRequestVo
+
         ModelMapper modelMapper = new ModelMapper();
 
-        modelMapper.map(productRequestDto, product);
+        modelMapper.map(updateproductRequestDto, product);
 
         productRepository.save(product);
 
         return null;
+    }
+
+    // 옵션 별 상품 반환
+    @Override
+    public List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId) {
+        log.info("before productRepository");
+        List<Product> products = productRepositoryCustom.findFilteredProduct(sizeId, colorId,
+            etcId);
+        log.info("List<Product> products[0] {}", products.get(0).toString());
+        ModelMapper modelMapper = new ModelMapper();
+        List<ProductResponseDto> productResponseDtos = products.stream()
+            .map(product -> modelMapper.map(product, ProductResponseDto.class))
+            .collect(Collectors.toList());
+
+        log.info("productResponseDtos {}", productResponseDtos);
+
+        return productResponseDtos;
     }
 
 //    @Override
@@ -135,21 +161,6 @@ public class ProductServiceImpl implements ProductService {
 //    public List<DailyHotProductResponseDto> getDailyHotProducts() {
 //
 //        return List.of();
-//    }
-
-//    @Override
-//    public List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId) {
-//        log.info("before productRepository");
-//        List<Product> products = productRepository.findBySizeAndColorAndEtc(sizeId, colorId, etcId);
-//        log.info("List<Product> products[0] {}", products.get(0).toString());
-//        ModelMapper modelMapper = new ModelMapper();
-//        List<ProductResponseDto> productResponseDtos = products.stream()
-//            .map(product -> modelMapper.map(product, ProductResponseDto.class))
-//            .collect(Collectors.toList());
-//
-//        log.info("productResponseDtos {}", productResponseDtos);
-//
-//        return productResponseDtos;
 //    }
 
 //    @Override

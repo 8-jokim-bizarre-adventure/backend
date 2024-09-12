@@ -1,4 +1,4 @@
-package com.jokim.sivillage.api.brand;
+package com.jokim.sivillage.api.brand.domain;
 
 import jakarta.persistence.*;
 
