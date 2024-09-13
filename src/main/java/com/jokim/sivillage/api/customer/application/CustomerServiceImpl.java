@@ -137,6 +137,7 @@ public class CustomerServiceImpl implements CustomerService {
             String accessToken = jwtTokenProvider.generateAccessToken(authentication);
             String refreshToken = jwtTokenProvider.generateRefreshToken(authentication);
 
+
             // 4. Redis에 Refresh Token 저장
             TokenRedis tokenRedis = new TokenRedis(customer.getUuid(), refreshToken);
             tokenRedisRepository.save(tokenRedis);
@@ -156,10 +157,10 @@ public class CustomerServiceImpl implements CustomerService {
     public RefreshTokenResponseDto refreshAccessToken(String refreshToken) {
         log.info("refreshAccessToken 들어옴{}",refreshToken);
 
-        String uuid = Jwts.parser().verifyWith((SecretKey) jwtTokenProvider.getSignKey())
-            .build().parseSignedClaims(refreshToken).getPayload().get("uuid", String.class);
+        String uuid = jwtTokenProvider.validateAndGetUserUuid(refreshToken);
+        log.info("사용자 uuid 추출 정상적인가?{}",uuid);
 
-        // Redis에서 리프레시 토큰 검증 //이게 왜 되지?
+        // Redis에서 리프레시 토큰 검증 //key값이 uuid이기에 uuid로 검색
         TokenRedis tokenRedis = tokenRedisRepository.findById(uuid)
             .orElseThrow(() -> new BaseException(BaseResponseStatus.TOKEN_NOT_VALID));
 
@@ -187,8 +188,8 @@ public class CustomerServiceImpl implements CustomerService {
     public void logout(String accessToken) {
         try {
             // 액세스 토큰에서 UUID 추출
-            String uuid = Jwts.parser().verifyWith((SecretKey) jwtTokenProvider.getSignKey())
-                .build().parseSignedClaims(accessToken).getPayload().get("uuid", String.class);
+            String uuid = jwtTokenProvider.validateAndGetUserUuid(accessToken);
+            log.info("사용자 uuid 추출 정상적인가?{}",uuid);
 
             // Redis에서 리프레시 토큰 삭제
             tokenRedisRepository.deleteById(uuid);

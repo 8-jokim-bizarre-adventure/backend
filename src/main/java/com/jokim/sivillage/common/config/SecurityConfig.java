@@ -52,7 +52,7 @@ public class SecurityConfig {
                         "/api/v1/auth/sign-in",
                         "/api/v1/auth/sign-in/oauth",
                         "/api/v1/auth/sign-up/simple",
-                        "/api/v1/auth/duplicateEmail",
+                        "/api/v1/auth/duplicate-email",
                         "/error"
                     )
                     .permitAll()

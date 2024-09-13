@@ -47,9 +47,9 @@ public class JwtTokenProvider {
      */
     public String validateAndGetUserUuid(String token) throws BaseException {
         try {
-            log.info(extractClaim(token, Claims::getSubject));
+            log.info("validateAndGet머시기 값{}",extractClaim(token, Claims::getSubject));
 
-            return null;
+            return extractClaim(token, Claims::getSubject);
         } catch (NullPointerException e) {
             log.info("토큰에 담긴 유저 정보가 없습니다");
             throw new BaseException(BaseResponseStatus.WRONG_JWT_TOKEN);
@@ -65,7 +65,7 @@ public class JwtTokenProvider {
      */
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractAllClaims(token);
-        log.info("claims={}", claims);
+        log.info("claims에 값은 다 있나?={}", claims);
         return claimsResolver.apply(claims);
     }
 
@@ -122,6 +122,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
             .signWith(getSignKey())
+            .subject(claims.getSubject())
             .claim("uuid", claims.getSubject())
             .issuedAt(now)
             .expiration(expiration)
@@ -137,6 +138,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
             .signWith(getSignKey())
+            .subject(claims.getSubject())
             .claim("uuid", claims.getSubject())
             .issuedAt(now)
             .expiration(expiration)

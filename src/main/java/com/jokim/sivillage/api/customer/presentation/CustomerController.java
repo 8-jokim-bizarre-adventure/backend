@@ -77,7 +77,7 @@ public class CustomerController {
     }
 
     @Operation(summary = "DuplicateEmail API", description = "이메일 중복체크 API입니다", tags = {"Auth"})
-    @PostMapping("auth/duplicateEmail")
+    @PostMapping("auth/duplicate-email")
     public BaseResponse<Void> duplicateEmail(@RequestBody DuplicateEmailVo duplicateEmailVo) {
         try {
             customerService.duplicateEmail(DuplicateEmailDto.toDto(duplicateEmailVo));
@@ -88,7 +88,7 @@ public class CustomerController {
     }
 
     @Operation(summary = "Logout API", description = "로그아웃 API 입니다.", tags = {"Auth"})
-    @PostMapping("/auth/logout")
+    @PostMapping("auth/logout")
     public BaseResponse<Void> logout(
         @RequestHeader("Authorization") String authorizationHeader) {
         // Authorization 헤더에서 accessToken 추출
