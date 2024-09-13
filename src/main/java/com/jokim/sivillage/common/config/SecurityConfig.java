@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -24,6 +25,7 @@ public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomLogoutHandler customLogoutHandler;
 
     @Bean
     public CorsFilter corsFilter() {
@@ -66,7 +68,12 @@ public class SecurityConfig {
             )
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilter(corsFilter());
+            .addFilter(corsFilter())
+            .logout(logout -> logout
+                .logoutUrl("/api/v1/auth/logout")
+                .addLogoutHandler(customLogoutHandler) // CustomLogoutHandler 추가
+                .logoutSuccessHandler(new SimpleUrlLogoutSuccessHandler())  // 로그아웃 성공 시 동작
+            );
 
         return http.build();
     }

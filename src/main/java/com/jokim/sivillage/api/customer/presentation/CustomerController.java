@@ -89,13 +89,7 @@ public class CustomerController {
 
     @Operation(summary = "Logout API", description = "로그아웃 API 입니다.", tags = {"Auth"})
     @PostMapping("auth/logout")
-    public BaseResponse<Void> logout(
-        @RequestHeader("Authorization") String authorizationHeader) {
-        // Authorization 헤더에서 accessToken 추출
-        String accessToken = authorizationHeader.replace("Bearer ", "");
-        customerService.logout(accessToken);
-
-        return new BaseResponse<>(BaseResponseStatus.SUCCESS);
+    public void logout(@RequestHeader("Authorization") String authorizationHeader) {
 
     }
 

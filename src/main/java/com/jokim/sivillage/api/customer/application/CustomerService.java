@@ -20,7 +20,6 @@ public interface CustomerService {
 
     RefreshTokenResponseDto refreshAccessToken(String refreshToken);
 
-    void logout(String accessToken);
 
     Optional<Customer> findUserByEmail(String email);
 

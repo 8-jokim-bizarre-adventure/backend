@@ -200,33 +200,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-    @Override
-    @Transactional
-    public void logout(String accessToken) {
-        try {
-            // 액세스 토큰에서 UUID 추출
-            String uuid = jwtTokenProvider.validateAndGetUserUuid(accessToken);
-            log.info("사용자 uuid 추출 정상적인가?{}",uuid);
-
-            // Redis에서 리프레시 토큰 삭제
-            tokenRedisRepository.deleteById(uuid);
-            log.info("UUID에 대한 리프레시 토큰을 제거했습니다: {}", uuid);
-
-            // Access Token의 남은 유효기간을 계산
-            Date expirationDate = Jwts.parser().verifyWith((SecretKey) jwtTokenProvider.getSignKey())
-                .build().parseSignedClaims(accessToken).getPayload().getExpiration();
-            long now = System.currentTimeMillis();
-            long timeToLive = expirationDate.getTime() - now;
-
-            // Access Token을 블랙리스트에 추가
-            tokenBlacklistRepository.saveBlacklistedToken(accessToken, timeToLive, TimeUnit.MILLISECONDS);
-
-        } catch (Exception e) {
-            log.error("로그아웃 중 오류 발생", e);
-            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
     private Authentication authenticate(Customer customer, String inputPassword) {
         AuthUserDetail authUserDetail = new AuthUserDetail(customer);

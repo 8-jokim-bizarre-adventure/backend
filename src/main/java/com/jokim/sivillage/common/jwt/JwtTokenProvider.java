@@ -115,6 +115,8 @@ public class JwtTokenProvider {
      * 클레임 정보, 사용자 ID, 생성 시간, 만료 시간 등을 설정하고, 서명 알고리즘과 서명 키를 사용하여 토큰을 생성합니다.
      * Access Token 역활
      */
+
+
     public String generateAccessToken(Authentication authentication) {
         Claims claims = Jwts.claims().subject(authentication.getName()).build();
         Date now = new Date();
