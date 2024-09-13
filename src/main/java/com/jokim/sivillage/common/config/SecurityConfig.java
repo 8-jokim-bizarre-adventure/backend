@@ -50,11 +50,11 @@ public class SecurityConfig {
                     .requestMatchers(
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/api/v1/auth/refresh",
-                        "/api/v1/auth/sign-in",
-                        "/api/v1/auth/sign-in/oauth",
-                        "/api/v1/auth/sign-up/simple",
-                        "/api/v1/auth/duplicate-email",
+                        "/v1/auth/refresh",
+                        "/v1/auth/sign-in",
+                        "/v1/auth/sign-in/oauth",
+                        "/v1/auth/sign-up/simple",
+                        "/v1/auth/duplicate-email",
                         "/error"
                     )
                     .permitAll()
@@ -70,7 +70,7 @@ public class SecurityConfig {
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilter(corsFilter())
             .logout(logout -> logout
-                .logoutUrl("/api/v1/auth/logout")
+                .logoutUrl("/v1/auth/logout")
                 .addLogoutHandler(customLogoutHandler) // CustomLogoutHandler 추가
                 .logoutSuccessHandler(new SimpleUrlLogoutSuccessHandler())  // 로그아웃 성공 시 동작
             );
