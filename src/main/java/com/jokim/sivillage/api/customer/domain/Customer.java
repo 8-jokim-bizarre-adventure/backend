@@ -17,7 +17,9 @@ import java.util.List;
 @Getter
 @Entity
 @ToString
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Customer extends BaseEntity implements UserDetails {
 
     @Id
@@ -53,33 +55,8 @@ public class Customer extends BaseEntity implements UserDetails {
     private State state;
 
     @Comment("회원주소")
-    @Column(length = 100)
+    @Column(length = 200)
     private String address;
-
-    @Builder
-    public Customer(
-        Long id,
-        String uuid,
-        String email,
-        String password,
-        String name,
-        Date birth,
-        String phone,
-        State state,
-        String address
-
-    ) {
-        this.id = id;
-        this.uuid = uuid;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.birth = birth;
-        this.phone = phone;
-        this.state = state;
-        this.address = address;
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -15,9 +15,9 @@ import lombok.ToString;
 public class RefreshTokenRequestDto {
     private String refreshToken;
 
-    public static RefreshTokenRequestDto toDto(RefreshTokenRequestVo refreshTokenRequestVo){
+    public static RefreshTokenRequestDto toDto(String refreshToken){
         return RefreshTokenRequestDto.builder()
-            .refreshToken(refreshTokenRequestVo.getRefreshToken())
+            .refreshToken(refreshToken)
             .build();
     }
 }

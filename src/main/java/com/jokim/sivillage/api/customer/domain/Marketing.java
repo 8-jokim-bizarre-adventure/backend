@@ -1,15 +1,14 @@
 package com.jokim.sivillage.api.customer.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
-@Entity(name = "marketing")
+@Entity
 @ToString
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Marketing {
 
     @Id
@@ -32,21 +31,5 @@ public class Marketing {
     private Boolean callAgreement;
 
 
-    @Builder
-    public Marketing(
-        Long id,
-        String uuid,
-        Boolean smsAgreement,
-        Boolean emailAgreement,
-        Boolean dmAgreement,
-        Boolean callAgreement
-    ) {
-        this.id = id;
-        this.uuid = uuid;
-        this.smsAgreement = smsAgreement;
-        this.emailAgreement = emailAgreement;
-        this.dmAgreement = dmAgreement;
-        this.callAgreement = callAgreement;
-    }
 
 }

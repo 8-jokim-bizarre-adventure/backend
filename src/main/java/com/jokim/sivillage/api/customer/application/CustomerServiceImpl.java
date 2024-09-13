@@ -2,6 +2,7 @@ package com.jokim.sivillage.api.customer.application;
 
 
 import com.jokim.sivillage.api.customer.dto.DuplicateEmailDto;
+import com.jokim.sivillage.api.customer.dto.RefreshTokenRequestDto;
 import com.jokim.sivillage.api.customer.dto.RefreshTokenResponseDto;
 import com.jokim.sivillage.api.customer.entity.AuthUserDetail;
 import com.jokim.sivillage.common.entity.BaseResponseStatus;
@@ -171,11 +172,8 @@ public class CustomerServiceImpl implements CustomerService {
     //리프레시 토큰을 확인하여 accessToken 재발급
     @Override
     @Transactional
-    public RefreshTokenResponseDto refreshAccessToken(String refreshToken) {
-        log.info("refreshAccessToken 들어옴{}",refreshToken);
-
-        String uuid = jwtTokenProvider.validateAndGetUserUuid(refreshToken);
-        log.info("사용자 uuid 추출 정상적인가?{}",uuid);
+    public RefreshTokenResponseDto refreshAccessToken(RefreshTokenRequestDto refreshTokenRequestDto) {
+        String uuid = jwtTokenProvider.validateAndGetUserUuid(refreshTokenRequestDto.getRefreshToken());
 
         // Redis에서 리프레시 토큰 검증 //key값이 uuid이기에 uuid로 검색
         TokenRedis tokenRedis = tokenRedisRepository.findById(uuid)

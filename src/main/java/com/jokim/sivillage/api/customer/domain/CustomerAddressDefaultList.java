@@ -1,14 +1,14 @@
 package com.jokim.sivillage.api.customer.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
-@Entity(name = "default_address")
+@Entity
 @ToString
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomerAddressDefaultList {
 
     @Id

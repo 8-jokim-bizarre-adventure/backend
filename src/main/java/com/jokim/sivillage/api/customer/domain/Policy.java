@@ -1,15 +1,14 @@
 package com.jokim.sivillage.api.customer.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
-@Entity(name = "policy")
+@Entity
 @ToString
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Policy {
 
     @Id
@@ -31,20 +30,4 @@ public class Policy {
     @Column(nullable = false)
     private Boolean tomboyInfoUsageRight;
 
-    @Builder
-    public Policy(
-        Long id,
-        String uuid,
-        Boolean webUsageRight,
-        Boolean integratedMemberRight,
-        Boolean infoUsageRight,
-        Boolean tomboyInfoUsageRight
-    ) {
-        this.id = id;
-        this.uuid = uuid;
-        this.webUsageRight = webUsageRight;
-        this.integratedMemberRight = integratedMemberRight;
-        this.infoUsageRight = infoUsageRight;
-        this.tomboyInfoUsageRight = tomboyInfoUsageRight;
-    }
 }

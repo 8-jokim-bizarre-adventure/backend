@@ -2,6 +2,7 @@ package com.jokim.sivillage.api.customer.application;
 
 import com.jokim.sivillage.api.customer.domain.Customer;
 import com.jokim.sivillage.api.customer.dto.DuplicateEmailDto;
+import com.jokim.sivillage.api.customer.dto.RefreshTokenRequestDto;
 import com.jokim.sivillage.api.customer.dto.RefreshTokenResponseDto;
 import com.jokim.sivillage.api.customer.dto.in.*;
 import com.jokim.sivillage.api.customer.dto.out.SignInResponseDto;
@@ -18,7 +19,7 @@ public interface CustomerService {
 
     SignInResponseDto oauthSignIn(OauthSignInRequestDto oauthSignInRequestDto);
 
-    RefreshTokenResponseDto refreshAccessToken(String refreshToken);
+    RefreshTokenResponseDto refreshAccessToken(RefreshTokenRequestDto refreshTokenRequestDto);
 
 
     Optional<Customer> findUserByEmail(String email);

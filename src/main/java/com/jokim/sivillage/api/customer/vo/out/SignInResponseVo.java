@@ -3,7 +3,6 @@ package com.jokim.sivillage.api.customer.vo.out;
 import lombok.*;
 
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

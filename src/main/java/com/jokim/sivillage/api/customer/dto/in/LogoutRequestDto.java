@@ -21,6 +21,4 @@ public class LogoutRequestDto {
             .accessToken(logoutRequestVo.getAccessToken())
             .build();
     }
-
-
 }

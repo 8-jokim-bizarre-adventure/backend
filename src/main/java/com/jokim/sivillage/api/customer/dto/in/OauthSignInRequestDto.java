@@ -34,5 +34,4 @@ public class OauthSignInRequestDto {
             .oauthProviderId(oauthProviderId)
             .build();
     }
-
 }

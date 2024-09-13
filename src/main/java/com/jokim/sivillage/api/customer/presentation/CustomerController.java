@@ -2,6 +2,7 @@ package com.jokim.sivillage.api.customer.presentation;
 
 
 import com.jokim.sivillage.api.customer.dto.DuplicateEmailDto;
+import com.jokim.sivillage.api.customer.dto.RefreshTokenRequestDto;
 import com.jokim.sivillage.api.customer.dto.RefreshTokenResponseDto;
 import com.jokim.sivillage.api.customer.dto.out.SignInResponseDto;
 import com.jokim.sivillage.api.customer.vo.DuplicateEmailVo;
@@ -115,7 +116,7 @@ public class CustomerController {
             // Authorization 헤더에서 리프레시 토큰 추출
             String refreshToken = authorizationHeader.replace("Bearer ", "");
             // 리프레시 토큰으로 액세스 토큰 재발급
-            RefreshTokenResponseDto responseDto = customerService.refreshAccessToken(refreshToken);
+            RefreshTokenResponseDto responseDto = customerService.refreshAccessToken(RefreshTokenRequestDto.toDto(refreshToken));
 
             // 재발급된 액세스 토큰을 반환
             return new BaseResponse<>(responseDto.toVo());
