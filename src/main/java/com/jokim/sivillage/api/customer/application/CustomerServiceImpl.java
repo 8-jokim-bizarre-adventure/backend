@@ -86,9 +86,26 @@ public class CustomerServiceImpl implements CustomerService {
             customerMarketingRepository.save(signUpRequestDto.toMarketingEntity(uuid));
             customerPolicyRepository.save(signUpRequestDto.toPolicyEntity(uuid));
         } catch (Exception e) {
-            throw new IllegalArgumentException("회원가입 실패");
+            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @Override
+    @Transactional
+    public void update(UpdateRequestDto updateRequestDto) {
+        String uuid = jwtTokenProvider.validateAndGetUserUuid(updateRequestDto.getAccessToken());
+        Customer customer = customerRepository.findByUuid(uuid).orElse(null);
+        if (customer == null) {
+            throw new BaseException(BaseResponseStatus.TOKEN_NOT_VALID);
+        }
+
+        try {
+            // 기존 customer 엔티티 수정 후 저장
+            customerRepository.save(updateRequestDto.updateEntity(customer, passwordEncoder));
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

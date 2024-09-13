@@ -12,6 +12,8 @@ public interface CustomerService {
 
     void signUp(SignUpRequestDto signUpRequestDto);
 
+    void update(UpdateRequestDto updateRequestDto);
+
     SignInResponseDto signIn(SignInRequestDto signInRequestDto);
 
     SignInResponseDto oauthSignIn(OauthSignInRequestDto oauthSignInRequestDto);

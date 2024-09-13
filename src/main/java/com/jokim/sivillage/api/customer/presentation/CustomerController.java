@@ -99,6 +99,20 @@ public class CustomerController {
 
     }
 
+    @Operation(summary = "Update API", description = "사용자 비밀번호 업데이트 API 입니다.", tags = {"Auth"})
+    @PostMapping("auth/update")
+    public BaseResponse<Void> update(
+        @RequestHeader("Authorization") String authorizationHeader,
+        @RequestBody UpdateRequestVo updateRequestVo
+    ) {
+        // Authorization 헤더에서 accessToken 추출
+        String accessToken = authorizationHeader.replace("Bearer ", "");
+        customerService.update(UpdateRequestDto.toDto(accessToken,updateRequestVo));
+
+        return new BaseResponse<>(BaseResponseStatus.SUCCESS);
+
+    }
+
     @Operation(summary = "Refresh AccessToken API", description = "리프레시 토큰을 사용하여 새로운 액세스 토큰을 재발급합니다.", tags = {"Auth"})
     @PostMapping("auth/refresh")
     public BaseResponse<RefreshTokenResponseVo> refreshAccessToken(
