@@ -1,7 +1,6 @@
 package com.jokim.sivillage.api.customer.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,7 +9,7 @@ import lombok.ToString;
 @Entity(name = "default_address")
 @ToString
 @NoArgsConstructor
-public class DefaultAddress {
+public class CustomerAddressDefaultList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

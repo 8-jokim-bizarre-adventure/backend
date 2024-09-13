@@ -28,12 +28,12 @@ public class SocialCustomer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false,length = 50)
+    private String oauthProviderId;
+
     @Comment("회원 UUID")
     @Column(nullable = false, length = 36)
     private String uuid;
-
-    @Column(nullable = false,length = 50)
-    private String oauthProviderId;
 
     @Column(nullable = false,length = 50)
     private String name;
