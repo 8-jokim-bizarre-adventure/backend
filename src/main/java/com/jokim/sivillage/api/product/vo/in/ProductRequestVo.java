@@ -11,7 +11,6 @@ public class ProductRequestVo {
 
     // 데이터 입력 할 때 제외 사용 될 일이 없겠다.
     private String productName;
-    private String brandName;
     private boolean isOnSale;
     private String detail;
     private Double standardPrice;
