@@ -5,7 +5,7 @@ import com.jokim.sivillage.api.brand.domain.Brand;
 import com.jokim.sivillage.api.brand.infrastructure.BrandRepository;
 import com.jokim.sivillage.api.hashtag.domain.Hashtag;
 import com.jokim.sivillage.api.hashtag.infrastructure.HashtagRepository;
-import com.jokim.sivillage.api.hashtag.infrastructure.ProductHashtagRepositoryCustom;
+import com.jokim.sivillage.api.hashtag.infrastructure.ProductHashtagRepository;
 import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
 import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
 import com.jokim.sivillage.api.product.dto.out.DailyHotProductResponseDto;
@@ -37,8 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
-    private final HashtagRepository hashtagRepository;
-    private final ProductHashtagRepositoryCustom productHashtagRepositoryCustom;
+    private final ProductHashtagRepository productHashtagRepository;
     private final ProductRepositoryCustom productRepositoryCustom;
 
     @Override
@@ -57,14 +56,9 @@ public class ProductServiceImpl implements ProductService {
         String brandName = brand.getMainName();
 
         // HashTagList 얻기
-//        List<Hashtag> hashtags = hashtagRepository.findByProductCode(productCode)
-//            .orElseThrow(() -> new EntityNotFoundException(
-//                "Hashtag not found with productCode: " + productCode));
-        List<Hashtag> hashtags = productHashtagRepositoryCustom.findHashtagsByProductCode(
-                productCode)
+        List<Hashtag> hashtags = productHashtagRepository.findByProductCode(productCode)
             .orElseThrow(() -> new EntityNotFoundException(
-                "Product hashtags not found with productCode: " + productCode
-            ));
+                "Hashtag not found with productCode: " + productCode));
 
         List<Map<String, Object>> hashtagList = hashtags.stream().map(hashtag -> {
             Map<String, Object> ht = new HashMap<String, Object>();
