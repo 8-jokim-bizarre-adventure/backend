@@ -1,3 +1,4 @@
+// todo 진행 예정
 //package com.jokim.sivillage.api.event.domain;
 //
 //import com.jokim.sivillage.api.image.Image;

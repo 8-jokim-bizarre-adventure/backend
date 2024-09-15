@@ -7,7 +7,7 @@ public class FavoriteBrandList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long favoriteBrandListId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")

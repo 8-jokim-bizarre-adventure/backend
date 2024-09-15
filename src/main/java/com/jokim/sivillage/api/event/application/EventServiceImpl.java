@@ -1,3 +1,4 @@
+// todo 추후 진행 예정
 //package com.jokim.sivillage.api.event.application;
 //
 //import com.jokim.sivillage.api.event.dto.EventResponseDto;

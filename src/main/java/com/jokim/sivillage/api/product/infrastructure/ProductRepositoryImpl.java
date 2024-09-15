@@ -40,11 +40,5 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             .fetch();
     }
 
-    //    @Override
-//    public List<Product> findProductByHit() {
-//
-////        QProduct
-//
-//        return List.of();
-//    }
+    
 }

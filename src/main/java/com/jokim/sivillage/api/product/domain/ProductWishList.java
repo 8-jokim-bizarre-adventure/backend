@@ -1,3 +1,4 @@
+// todo 추후 예정
 //package com.jokim.sivillage.api.product.domain;
 //
 //

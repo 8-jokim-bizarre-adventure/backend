@@ -25,11 +25,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/v1")
+@RequestMapping("/v1")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "product-controller", description = "상품 관련 API")
+@Tag(name = "Product", description = "상품 관련 API")
 public class ProductController {
 
     private final ProductService productService;

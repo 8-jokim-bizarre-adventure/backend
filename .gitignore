@@ -38,6 +38,3 @@ out/
 
 ### .yaml files ###
 *.yaml
-
-### sql ###
-*.sql
