@@ -49,11 +49,13 @@ public class ProductServiceImpl implements ProductService {
                 "Product not found with productCode: " + productCode));
 
         // brandName 얻기
-        String brandCode = product.getBrandCode();
-        Brand brand = brandRepository.findByBrandCode(brandCode)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "Brand not found with brandCode: " + brandCode));
-        String brandName = brand.getMainName();
+//        String brandCode = product.getBrandCode();
+//        Brand brand = brandRepository.findByBrandCode(brandCode)
+//            .orElseThrow(() -> new EntityNotFoundException(
+//                "Brand not found with brandCode: " + brandCode));
+//        String brandName = brand.getMainName();
+        String brandName = "temp";
+        //todo productbrand 중개테이블 생기면 productCode로 접근하기
 
         // HashTagList 얻기
         List<Hashtag> hashtags = productHashtagRepository.findByProductCode(productCode)

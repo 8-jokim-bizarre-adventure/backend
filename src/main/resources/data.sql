@@ -8,13 +8,11 @@ VALUES ("b123",
 
 INSERT INTO `sivillage`.`product`
 (`product_code`,
- `brand_code`,
  `product_name`,
  `is_on_sale`,
  `detail`,
  `standard_price`)
 VALUES ("a123",
-        "b123",
         "쉐보레",
         true,
         "좋은상품입니다.",

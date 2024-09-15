@@ -21,7 +21,6 @@ public class UpdateProductRequestDto {
         return Product.builder().
             id(productId).
             productCode(productCode).
-            brandCode(brandCode).
             productName(productName).
             isOnSale(isOnSale).
             detail(detail).
@@ -32,7 +31,6 @@ public class UpdateProductRequestDto {
     public Product toEntity() {
         return Product.builder().
             productCode(productCode).
-            brandCode(brandName).
             productName(productName).
             isOnSale(isOnSale).
             detail(detail).

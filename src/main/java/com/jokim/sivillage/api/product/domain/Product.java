@@ -22,8 +22,6 @@ public class Product {
     private Long id;
     @Column(nullable = false, length = 36)
     private String productCode;
-    @Column(nullable = false, length = 36)
-    private String brandCode;
     @Column(nullable = false, length = 255)
     private String productName;
     @Column(nullable = false, columnDefinition = "boolean default false")

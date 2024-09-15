@@ -19,7 +19,6 @@ public class ProductRequestDto {
     public Product toEntity(String productCode, String brandCode) {
         return Product.builder().
             productCode(productCode).
-            brandCode(brandCode).
             productName(productName).
             isOnSale(isOnSale).
             detail(detail).
