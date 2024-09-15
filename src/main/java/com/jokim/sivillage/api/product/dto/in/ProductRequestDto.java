@@ -1,8 +1,10 @@
 package com.jokim.sivillage.api.product.dto.in;
 
 import com.jokim.sivillage.api.product.domain.Product;
+import com.jokim.sivillage.api.product.vo.in.ProductRequestVo;
 import lombok.Builder;
 import lombok.Getter;
+import org.modelmapper.ModelMapper;
 
 @Getter
 public class ProductRequestDto {
@@ -33,6 +35,17 @@ public class ProductRequestDto {
         this.isOnSale = isOnSale;
         this.detail = detail;
         this.standardPrice = standardPrice;
+    }
+
+    public ProductRequestDto() {
+    }
+
+    public static ProductRequestDto toDto(ProductRequestVo productRequestVo) {
+        // VO -> Dto 필드 그대로면 modelMapper 사용하자.
+        ModelMapper modelMapper = new ModelMapper();
+        ProductRequestDto productRequestDto = modelMapper.map(productRequestVo,
+            ProductRequestDto.class);
+        return productRequestDto;
     }
 
 

@@ -51,16 +51,7 @@ public class ProductController {
     public BaseResponse<Void> createProduct(
         @RequestBody ProductRequestVo productRequestVo) {
         log.info("productRequestVo : {}", productRequestVo.toString());
-        ProductRequestDto productRequestDto = ProductRequestDto.builder()
-            .productName(productRequestVo.getProductName())
-            .brandName(productRequestVo.getBrandName())
-            .isOnSale(true)
-            .detail(productRequestVo.getDetail())
-            .standardPrice(productRequestVo.getStandardPrice())
-            .build();
-
-        productService.saveProduct(productRequestDto);
-
+        productService.saveProduct(ProductRequestDto.toDto(productRequestVo));
         return new BaseResponse<>();
     }
 
@@ -71,17 +62,8 @@ public class ProductController {
         @RequestBody UpdateProductRequestVo updateProductRequestVo) {
         log.info("productRequestVo : {}", updateProductRequestVo.toString());
 
-        UpdateProductRequestDto productRequestDto = UpdateProductRequestDto.builder()
-            .productCode(updateProductRequestVo.getProductCode())
-            .productName(updateProductRequestVo.getProductName())
-            .brandName(updateProductRequestVo.getBrandName())
-            .isOnSale(true)
-            .detail(updateProductRequestVo.getDetail())
-            .standardPrice(updateProductRequestVo.getStandardPrice())
-            .build();
-
-        productService.updateProduct(productRequestDto.getProductCode(), productRequestDto);
-
+        productService.updateProduct(updateProductRequestVo.getProductCode(),
+            UpdateProductRequestDto.toDto(updateProductRequestVo));
         return new BaseResponse<>();
     }
 
@@ -93,17 +75,11 @@ public class ProductController {
         @RequestParam(value = "size-id") Long sizeId,
         @RequestParam(value = "color-id") Long colorId,
         @RequestParam(value = "etc-id") Long etcId) {
-        log.info("productSize : {}", sizeId);
-        log.info("productColor : {}", colorId);
-        log.info("productEtc : {}", etcId);
+        log.info("productSize, color, etc id : {}, {}, {}", sizeId, colorId, etcId);
         List<ProductResponseDto> productResponseDto = productService.getFilteredProducts(sizeId,
             colorId, etcId);
-
         log.info("productResponseDto : {}", productResponseDto.toString());
         ModelMapper modelMapper = new ModelMapper();
-//        List<ProductResponseVo> productResponseVo = productResponseDto.stream()
-//            .map(ResponseDto -> modelMapper.map(ResponseDto, ProductResponseVo.class)).collect(
-//                Collectors.toList());
         List<ProductResponseVo> productResponseVo = productResponseDto.stream()
             .map(ProductResponseDto::toResponseVo).toList();
         log.info("productResponseVo : {}", productResponseVo.toString());

@@ -17,8 +17,7 @@ import lombok.ToString;
 @ToString
 public class ProductResponseVo {
 
-    @JsonProperty("productId")
-    private Long id;
+    
     private String productCode;
     private String imageUrl;
     private String brandName;

@@ -18,15 +18,6 @@ public interface ProductService {
     List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId);
 
     List<ProductResponseDto> getProductsByCategory(Long categoryId);
-//    void deleteProduct(Long id);
-
-    //    List<DailyHotProductResponseDto> getDailyHotProducts();
-//
-
-//
-//    List<ProductResponseDto> getRandomProducts(Integer count);
-//
-//    List<ProductResponseDto> getProductsBySortType(String sortType);
 }
 
 

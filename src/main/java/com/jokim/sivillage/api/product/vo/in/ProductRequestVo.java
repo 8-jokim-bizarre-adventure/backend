@@ -8,7 +8,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ProductRequestVo {
-
+    
     private String productName;
     private String brandName;
     private boolean isOnSale;

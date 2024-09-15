@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class UpdateProductRequestVo {
 
+    // productCode로 객체 찾고 나머지 필드 수정한다.
     private String productCode;
     private String productName;
     private String brandName;
