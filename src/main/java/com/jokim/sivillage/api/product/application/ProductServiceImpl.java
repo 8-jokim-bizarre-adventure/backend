@@ -106,7 +106,6 @@ public class ProductServiceImpl implements ProductService {
         // 카테고리 이름이 존재하지 않을 시, 코드 생성
         if (brandCode == null) {
             String brandUuid = UUID.randomUUID().toString();
-            brandCode = brandUuid.substring(0, 8);
         }
 
         productRepository.save(productRequestDto.toEntity(productCode, brandCode));
