@@ -56,7 +56,7 @@ public class SecurityConfig {
                         "/v1/auth/sign-up/simple",
                         "/v1/auth/duplicate-email",
                         "/error",
-                        "v1/*" // for test
+                        "/v1/*" // for test
                     )
                     .permitAll()
                     .anyRequest()

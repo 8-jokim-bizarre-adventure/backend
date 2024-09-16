@@ -4,6 +4,7 @@ import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
 import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
 import com.jokim.sivillage.api.product.dto.out.DailyHotProductResponseDto;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
+import com.jokim.sivillage.api.product.vo.out.ProductListResponseVo;
 import java.util.List;
 
 
@@ -17,7 +18,7 @@ public interface ProductService {
 
     List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId);
 
-    List<ProductResponseDto> getProductsByCategory(Long categoryId);
+//    List<ProductListResponseVo> getProductsByCategory(Long categoryId);
 }
 
 

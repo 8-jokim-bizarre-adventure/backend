@@ -1,6 +1,7 @@
 package com.jokim.sivillage.api.product.dto.out;
 
 import com.jokim.sivillage.api.hashtag.domain.Hashtag;
+import com.jokim.sivillage.api.product.vo.out.HashtagResponseVo;
 import com.jokim.sivillage.api.product.vo.out.ProductResponseVo;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class ProductResponseDto {
     private Double price;
     private String starPoint;
     private Integer reviewCount;
-    private List<Map<String, Object>> hashTag;
+    private List<HashtagResponseVo> hashTag;
     private String detail;
 
     public ProductResponseVo toResponseVo() {

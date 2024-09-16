@@ -7,6 +7,7 @@ import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.vo.in.ProductRequestVo;
 import com.jokim.sivillage.api.product.vo.in.UpdateProductRequestVo;
+import com.jokim.sivillage.api.product.vo.out.ProductListResponseVo;
 import com.jokim.sivillage.api.product.vo.out.ProductResponseVo;
 import com.jokim.sivillage.common.entity.BaseEntity;
 import com.jokim.sivillage.common.entity.BaseResponse;
@@ -86,9 +87,10 @@ public class ProductController {
         return new BaseResponse<>(productResponseVo);
     }
 
-//    //  전체상품보기(카테고리) 20 => 규찬's
+    //    //  전체상품보기(카테고리)
+    // 개발 중 정지
 //    @GetMapping("/products")
-//    public BaseResponse<List<ProductResponseVo>> getProductByCategory(
+//    public BaseResponse<List<ProductListResponseVo>> getProductByCategory(
 //        @RequestParam(value = "category-id") Long categoryId) {
 //        log.info("categoryId : {}", categoryId);
 //        List<ProductResponseDto> productResponseDto = productService.getProductsByCategory(

@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 public class ProductResponseVo {
 
-    
+
     private String productCode;
     private String imageUrl;
     private String brandName;
@@ -27,7 +27,7 @@ public class ProductResponseVo {
     private Double price;
     private String starPoint;
     private Integer reviewCount;
-    private List<Map<String, Object>> hashTag;
+    private List<HashtagResponseVo> hashTag;
     private String detail;
 
 

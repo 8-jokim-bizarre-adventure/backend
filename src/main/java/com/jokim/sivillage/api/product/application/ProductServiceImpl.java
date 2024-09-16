@@ -3,23 +3,20 @@ package com.jokim.sivillage.api.product.application;
 
 import com.jokim.sivillage.api.brand.domain.Brand;
 import com.jokim.sivillage.api.brand.infrastructure.BrandRepository;
+
+import com.jokim.sivillage.api.bridge.domain.BrandProductList;
+import com.jokim.sivillage.api.bridge.infrastructure.BrandProductListRepository;
 import com.jokim.sivillage.api.hashtag.domain.Hashtag;
-import com.jokim.sivillage.api.hashtag.infrastructure.HashtagRepository;
 import com.jokim.sivillage.api.hashtag.infrastructure.ProductHashtagRepository;
 import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
 import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
-import com.jokim.sivillage.api.product.dto.out.DailyHotProductResponseDto;
 import com.jokim.sivillage.api.product.domain.Product;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepository;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepositoryCustom;
-import com.jokim.sivillage.api.product.vo.in.ProductRequestVo;
-import com.jokim.sivillage.api.product.vo.in.UpdateProductRequestVo;
+import com.jokim.sivillage.api.product.vo.out.HashtagResponseVo;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.ui.Model;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
     private final BrandRepository brandRepository;
     private final ProductHashtagRepository productHashtagRepository;
     private final ProductRepositoryCustom productRepositoryCustom;
+    private final BrandProductListRepository brandProductListRepository;
 
     @Override
     public ProductResponseDto getProductByProductCode(String productCode) {
@@ -49,25 +46,32 @@ public class ProductServiceImpl implements ProductService {
                 "Product not found with productCode: " + productCode));
 
         // brandName 얻기
-//        String brandCode = product.getBrandCode();
-//        Brand brand = brandRepository.findByBrandCode(brandCode)
-//            .orElseThrow(() -> new EntityNotFoundException(
-//                "Brand not found with brandCode: " + brandCode));
-//        String brandName = brand.getMainName();
-        String brandName = "temp";
-        //todo productbrand 중개테이블 생기면 productCode로 접근하기
+        // 1. brandCode 얻기
+        BrandProductList brandProductList =
+            brandProductListRepository.findBrandProductListByProductCode(productCode);
+        if (brandProductList == null) {
+            //todo
+        }
+        String brandCode = brandProductList.getBrandCode();
+
+        // 2. 얻은 brandCode로 brandName 얻기
+        Brand brand = brandRepository.findByBrandCode(brandCode)
+            .orElseThrow(() -> new EntityNotFoundException(
+                "Brand not found with brandCode: " + brandCode
+            ));
+        String brandName = brand.getMainName();
 
         // HashTagList 얻기
         List<Hashtag> hashtags = productHashtagRepository.findByProductCode(productCode)
             .orElseThrow(() -> new EntityNotFoundException(
                 "Hashtag not found with productCode: " + productCode));
 
-        List<Map<String, Object>> hashtagList = hashtags.stream().map(hashtag -> {
-            Map<String, Object> ht = new HashMap<String, Object>();
-            ht.put("hashtagId", hashtag.getId());
-            ht.put("value", hashtag.getValue());
-            return ht;
-        }).toList();
+        List<HashtagResponseVo> hashtagList = hashtags.stream().map(hashtag ->
+            HashtagResponseVo.builder()
+                .hashtagId(hashtag.getId())
+                .value(hashtag.getValue())
+                .build()
+        ).toList();
         log.info("hashtagList: {}", hashtagList.toString());
 
         ModelMapper modelMapper = new ModelMapper();
@@ -106,6 +110,7 @@ public class ProductServiceImpl implements ProductService {
         // 카테고리 이름이 존재하지 않을 시, 코드 생성
         if (brandCode == null) {
             String brandUuid = UUID.randomUUID().toString();
+            brandCode = brandUuid.substring(0, 8);
         }
 
         productRepository.save(productRequestDto.toEntity(productCode, brandCode));
@@ -139,11 +144,43 @@ public class ProductServiceImpl implements ProductService {
         return productResponseDtos;
     }
 
-    @Override
-    public List<ProductResponseDto> getProductsByCategory(Long categoryId) {
-
-        return List.of();
-    }
+    // category별 product => 작성 중 정지
+//    @Override
+//    public List<ProductListResponseVo> getProductsByCategory(Long categoryId) {
+//        // categoryId 에 해당하는 productCategoryList entity 반환
+//        List<ProductCategoryList> productCategoryLists = productCategoryListRepository.findById(
+//            categoryId);
+//        if (productCategoryLists.isEmpty()) {
+//            return new ArrayList<>();
+//        }
+//        // categoryId 에 해당하는 productCodes 반환하기
+//        List<String> productCodes = productCategoryLists.stream()
+//            .map(ProductCategoryList::getProductCode).toList();
+//
+//        // ProductCode에 해당하는 product 가져오기
+//        List<Product> products = productCodes.stream().
+//            map(productCode -> productRepository.findByProductCode(productCode).get()).toList();
+//
+//        // ProductListResponseVo로 만들기
+//        List<ProductListResponseVo> productListResponseVos = products.stream().map(
+//            product ->
+//                ProductListResponseVo.builder()
+//                    .productCode(product.getProductCode())
+//                    .productName(product.getProductName())
+//                    .imageUrl(
+//                        "https://image.sivillage.com/upload/C00001/goods/org/293/220802002890293.jpg?RS=750&SP=1")
+//                    // productMediaListRepository.findByProductCode().getMediaCode
+//                    //todo 중개테이블 생성 후 확인
+//                    // temp 값 입력
+//                    .discountRate()
+//                    .brandName()
+//                    .isWish(false) // 초기값
+//                    .build()
+//
+//        );
+//
+//        return List.of();
+//    }
 
 //    @Override
 //    public void deleteProduct(long id) {
