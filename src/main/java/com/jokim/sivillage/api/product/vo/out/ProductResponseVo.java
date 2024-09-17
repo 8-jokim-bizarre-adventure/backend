@@ -22,7 +22,7 @@ public class ProductResponseVo {
     private String imageUrl;
     private String brandName;
     private String productName;
-    private String discountRate;
+    private Integer discountRate;
     private Double amount;
     private Double price;
     private String starPoint;

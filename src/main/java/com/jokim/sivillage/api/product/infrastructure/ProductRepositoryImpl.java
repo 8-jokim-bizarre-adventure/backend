@@ -15,7 +15,9 @@ import com.jokim.sivillage.api.product.domain.option.QEtc;
 import com.jokim.sivillage.api.product.domain.option.QSize;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.vo.out.HashtagResponseVo;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -63,10 +65,16 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 ProductResponseDto.class,
                 product.productCode.as("productCode"),
                 media.url.as("imageUrl"),
+                brand.mainName.as("brandName"),
+                Expressions.numberTemplate(Integer.class, "((1 - ({0}/{1}))*100) ",
+                    product.discountPrice,
+                    product.standardPrice).as("discountRate"),
                 product.productName.as("productName"),
                 product.isOnSale.as("isOnSale"),
-                product.standardPrice.as("standardPrice"),
-                brand.mainName.as("brandName")
+                product.standardPrice.as("price"),
+                product.discountPrice.as("amount"),
+                product.detail.as("detail")
+
             ))
             .from(product)
             .leftJoin(productMediaList).on(product.productCode.eq(

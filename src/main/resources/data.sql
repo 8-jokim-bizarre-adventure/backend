@@ -62,6 +62,27 @@ VALUES (3,
         "a123",
         "po123");
 
+INSERT INTO `sivillage`.`product_media_list`
+(`media_code`,
+ `product_code`)
+VALUES ("m123",
+        "a123");
+
+INSERT INTO `sivillage`.`media`
+(`type`,
+ `media_code`,
+ `url`,
+ `name`)
+VALUES ("image",
+        "m123",
+        "www.naver.com",
+        "a123");
+
+INSERT INTO `sivillage`.`brand_product_list`
+(`brand_code`,
+ `product_code`)
+VALUES ("b123",
+        "a123");
 
 --
 --
