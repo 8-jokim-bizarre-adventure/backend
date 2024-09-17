@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name = "product", uniqueConstraints = {@UniqueConstraint(columnNames = "productCode")})
 public class Product {
 
     @Id
@@ -30,6 +30,16 @@ public class Product {
     private String detail;
     @Column(nullable = false)
     private Double standardPrice;
+
+    @Builder
+    public Product(String productCode, String productName, boolean isOnSale, String detail,
+        Double standardPrice) {
+        this.productCode = productCode;
+        this.productName = productName;
+        this.isOnSale = isOnSale;
+        this.detail = detail;
+        this.standardPrice = standardPrice;
+    }
 
 //    public void update(UpdateProductRequestDto updateProductRequestDto) {
 ////        this.brandCode = updateProductRequestDto.get

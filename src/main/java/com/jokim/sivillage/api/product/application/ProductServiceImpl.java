@@ -7,6 +7,7 @@ import com.jokim.sivillage.api.brand.infrastructure.BrandRepository;
 import com.jokim.sivillage.api.bridge.domain.BrandProductList;
 import com.jokim.sivillage.api.bridge.infrastructure.BrandProductListRepository;
 import com.jokim.sivillage.api.hashtag.domain.Hashtag;
+import com.jokim.sivillage.api.hashtag.domain.ProductHashtag;
 import com.jokim.sivillage.api.hashtag.infrastructure.ProductHashtagRepository;
 import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
 import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto getProductByProductCode(String productCode) {
-
+        // todo 여러번의 join이 필요하지만.. queryDsl로 안전하게 짜보기
         // == Product ==
         Product product = productRepository.findByProductCode(productCode)
             .orElseThrow(() -> new EntityNotFoundException(
@@ -60,26 +61,31 @@ public class ProductServiceImpl implements ProductService {
                 "Brand not found with brandCode: " + brandCode
             ));
         String brandName = brand.getMainName();
+        log.info("brandName: {} " + brandName);
 
-        // HashTagList 얻기
-        List<Hashtag> hashtags = productHashtagRepository.findByProductCode(productCode)
+        // === Hashtag ===
+        // ProductHashtag list 얻기
+        List<ProductHashtag> productHashtags = productHashtagRepository.findByProductCode(
+                productCode)
             .orElseThrow(() -> new EntityNotFoundException(
                 "Hashtag not found with productCode: " + productCode));
+        // Hashtag list 얻기
+        List<Hashtag> hashtags = productHashtags.stream().map(ProductHashtag::getHashtag).toList();
 
-        List<HashtagResponseVo> hashtagList = hashtags.stream().map(hashtag ->
+        List<HashtagResponseVo> hashtagResponseVos = hashtags.stream().map(hashtag ->
             HashtagResponseVo.builder()
                 .hashtagId(hashtag.getId())
                 .value(hashtag.getValue())
                 .build()
         ).toList();
-        log.info("hashtagList: {}", hashtagList.toString());
+        log.info("hashtagResponseVos: {}", hashtagResponseVos.toString());
 
         ModelMapper modelMapper = new ModelMapper();
         ProductResponseDto productResponseDto
             = modelMapper.map(product, ProductResponseDto.class);
 
         productResponseDto.setBrandName(brandName);
-        productResponseDto.setHashTag(hashtagList);
+        productResponseDto.setHashTag(hashtagResponseVos);
 
         return productResponseDto;
     }

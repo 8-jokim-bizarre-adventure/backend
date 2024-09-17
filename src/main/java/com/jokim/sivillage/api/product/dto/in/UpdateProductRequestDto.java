@@ -19,8 +19,8 @@ public class UpdateProductRequestDto {
 
     public Product toEntity(String brandCode, Long productId) {
         return Product.builder().
-            id(productId).
-            productCode(productCode).
+//            id(productId).
+    productCode(productCode).
             productName(productName).
             isOnSale(isOnSale).
             detail(detail).

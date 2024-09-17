@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductHashtagRepository extends JpaRepository<ProductHashtag, Long> {
 
-    Optional<List<Hashtag>> findByProductCode(String productCode);
+    Optional<List<ProductHashtag>> findByProductCode(String productCode);
 
 }

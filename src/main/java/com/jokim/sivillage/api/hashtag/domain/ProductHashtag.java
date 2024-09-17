@@ -2,8 +2,10 @@ package com.jokim.sivillage.api.hashtag.domain;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class ProductHashtag {
 
     @Id
