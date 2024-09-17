@@ -16,6 +16,9 @@ import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepository;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepositoryCustom;
 import com.jokim.sivillage.api.product.vo.out.HashtagResponseVo;
+import com.jokim.sivillage.common.entity.BaseResponseStatus;
+import com.jokim.sivillage.common.exception.BaseException;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
@@ -43,85 +46,17 @@ public class ProductServiceImpl implements ProductService {
 
         return productRepositoryCustom.findProductByProductCode(productCode);
 
-        // querydsl 방식으로 대체
-//        // == Product ==
-//        Product product = productRepository.findByProductCode(productCode)
-//            .orElseThrow(() -> new EntityNotFoundException(
-//                "Product not found with productCode: " + productCode));
-//
-//        // brandName 얻기
-//        // 1. brandCode 얻기
-//        BrandProductList brandProductList =
-//            brandProductListRepository.findBrandProductListByProductCode(productCode);
-//        if (brandProductList == null) {
-//            //todo
-//        }
-//        String brandCode = brandProductList.getBrandCode();
-//
-//        // 2. 얻은 brandCode로 brandName 얻기
-//        Brand brand = brandRepository.findByBrandCode(brandCode)
-//            .orElseThrow(() -> new EntityNotFoundException(
-//                "Brand not found with brandCode: " + brandCode
-//            ));
-//        String brandName = brand.getMainName();
-//        log.info("brandName: {} " + brandName);
-//
-//        // === Hashtag ===
-//        // ProductHashtag list 얻기
-//        List<ProductHashtag> productHashtags = productHashtagRepository.findByProductCode(
-//                productCode)
-//            .orElseThrow(() -> new EntityNotFoundException(
-//                "Hashtag not found with productCode: " + productCode));
-//        // Hashtag list 얻기
-//        List<Hashtag> hashtags = productHashtags.stream().map(ProductHashtag::getHashtag).toList();
-//
-//        List<HashtagResponseVo> hashtagResponseVos = hashtags.stream().map(hashtag ->
-//            HashtagResponseVo.builder()
-//                .hashtagId(hashtag.getId())
-//                .value(hashtag.getValue())
-//                .build()
-//        ).toList();
-//        log.info("hashtagResponseVos: {}", hashtagResponseVos.toString());
-//
-//        ModelMapper modelMapper = new ModelMapper();
-//        ProductResponseDto productResponseDto
-//            = modelMapper.map(product, ProductResponseDto.class);
-//
-//        productResponseDto.setBrandName(brandName);
-//        productResponseDto.setHashTag(hashtagResponseVos);
-
     }
 
     @Override
     public void saveProduct(ProductRequestDto productRequestDto) {
 
-        // === product ===
-        // product Uuid 생성
-        String productUuid;
-        String productCode;
-
-        // product Uuid 중복확인
-        do {
-            productUuid = UUID.randomUUID().toString();
-            productCode = productUuid.substring(0, 8);
-        }
-        while (productRepository.findByProductCode(productCode).isPresent());
-
-        // == brand == //
-        // brand명 입력 받을 시, brand code 찾아서 입력할 필요 있음.
-        String brandName = productRequestDto.getBrandName();
-        log.info("brandName: {}", brandName);
-        Brand brand = brandRepository.findByMainName(brandName).orElseGet(() -> new Brand());
-        log.info("brand: {}", brand.toString());
-        String brandCode = brand.getBrandCode();
-
-        // 카테고리 이름이 존재하지 않을 시, 코드 생성
-        if (brandCode == null) {
-            String brandUuid = UUID.randomUUID().toString();
-            brandCode = brandUuid.substring(0, 8);
+        String productCode = productRequestDto.getProductCode();
+        if (productRepository.findByProductCode(productCode).isPresent()) {
+            throw new BaseException(BaseResponseStatus.ALREADY_EXIST_PRODUCT_CODE);
         }
 
-        productRepository.save(productRequestDto.toEntity(productCode, brandCode));
+        productRepository.save(productRequestDto.toEntity());
     }
 
     @Override

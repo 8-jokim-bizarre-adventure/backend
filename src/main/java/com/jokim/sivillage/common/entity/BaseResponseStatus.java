@@ -64,6 +64,10 @@ public enum BaseResponseStatus {
     // Interest
     NO_EXIST_INTEREST(HttpStatus.NOT_FOUND, false, 2501, "존재하지 않는 관심사입니다."),
 
+
+    // Product
+    ALREADY_EXIST_PRODUCT_CODE(HttpStatus.CONFLICT, false, 2061, "상품코드가 존재합니다."),
+
     /**
      * 3000: product service error
      */

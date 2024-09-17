@@ -10,6 +10,7 @@ import lombok.ToString;
 public class ProductRequestVo {
 
     // 데이터 입력 할 때 제외 사용 될 일이 없겠다.
+    private String productCode;
     private String productName;
     private boolean isOnSale;
     private String detail;

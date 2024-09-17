@@ -51,7 +51,9 @@ public class ProductController {
     @PostMapping("/products")
     public BaseResponse<Void> createProduct(
         @RequestBody ProductRequestVo productRequestVo) {
-        log.info("productRequestVo : {}", productRequestVo.toString());
+        log.info("productRequestVo : {} in createProduct", productRequestVo.toString());
+        ProductRequestDto productRequestDto = ProductRequestDto.toDto(productRequestVo);
+        log.info("productRequestDto : in ProductController {}", productRequestDto.toString());
         productService.saveProduct(ProductRequestDto.toDto(productRequestVo));
         return new BaseResponse<>();
     }
