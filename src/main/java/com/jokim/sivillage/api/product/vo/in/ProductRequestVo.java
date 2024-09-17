@@ -14,5 +14,6 @@ public class ProductRequestVo {
     private boolean isOnSale;
     private String detail;
     private Double standardPrice;
+    private Double discountPrice;
 
 }

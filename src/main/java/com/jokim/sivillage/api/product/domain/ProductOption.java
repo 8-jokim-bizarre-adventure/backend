@@ -19,7 +19,7 @@ public class ProductOption {
     @ManyToOne
     @JoinColumn(name = "color_id")
     private Color color;
-    
+
     @ManyToOne
     @JoinColumn(name = "etc_id")
     private Etc etc;
@@ -32,9 +32,6 @@ public class ProductOption {
 
     @Column(nullable = false)
     private Integer stock;
-
-    @Column(nullable = false)
-    private Double price;
 
 
 }

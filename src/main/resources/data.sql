@@ -11,12 +11,14 @@ INSERT INTO `sivillage`.`product`
  `product_name`,
  `is_on_sale`,
  `detail`,
- `standard_price`)
+ `standard_price`,
+ `discount_price`)
 VALUES ("a123",
         "쉐보레",
         true,
         "좋은상품입니다.",
-        36000);
+        36000,
+        18000);
 
 INSERT INTO `sivillage`.`hashtag`
     (`value`)
@@ -47,15 +49,13 @@ VALUES ("feathers",
         "재질");
 
 INSERT INTO `sivillage`.`product_option`
-(`price`,
- `stock`,
+(`stock`,
  `color_id`,
  `etc_id`,
  `size_id`,
  `product_code`,
  `product_option_code`)
-VALUES (3600,
-        3,
+VALUES (3,
         1,
         1,
         1,

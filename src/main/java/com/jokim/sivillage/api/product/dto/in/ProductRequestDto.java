@@ -15,6 +15,7 @@ public class ProductRequestDto {
     private boolean isOnSale;
     private String detail;
     private Double standardPrice;
+    private Double discountPrice;
 
     public Product toEntity(String productCode, String brandCode) {
         return Product.builder().
@@ -23,17 +24,19 @@ public class ProductRequestDto {
             isOnSale(isOnSale).
             detail(detail).
             standardPrice(standardPrice).
+            discountPrice(discountPrice).
             build();
     }
 
     @Builder
     public ProductRequestDto(String productName, String brandName,
-        boolean isOnSale, String detail, Double standardPrice) {
+        boolean isOnSale, String detail, Double standardPrice, Double discountPrice) {
         this.productName = productName;
         this.brandName = brandName;
         this.isOnSale = isOnSale;
         this.detail = detail;
         this.standardPrice = standardPrice;
+        this.discountPrice = discountPrice;
     }
 
     public ProductRequestDto() {
