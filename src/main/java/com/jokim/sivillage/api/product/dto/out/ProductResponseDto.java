@@ -5,13 +5,17 @@ import com.jokim.sivillage.api.product.vo.out.HashtagResponseVo;
 import com.jokim.sivillage.api.product.vo.out.ProductResponseVo;
 import java.util.List;
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Setter
 @ToString
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductResponseDto {
 
     private String productCode;
@@ -25,6 +29,7 @@ public class ProductResponseDto {
     private Integer reviewCount;
     private List<HashtagResponseVo> hashTag;
     private String detail;
+
 
     public ProductResponseVo toResponseVo() {
         return ProductResponseVo.builder()

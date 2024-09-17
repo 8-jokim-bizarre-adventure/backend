@@ -10,6 +10,7 @@ public interface ProductRepositoryCustom {
 
     List<Product> findFilteredProduct(Long sizeId, Long colorId, Long etcId);
 
+    ProductResponseDto findProductByProductCode(String productCode);
 //    List<Product> findProductByHit();
 
 //    List<Product> findProductByNewProduct();

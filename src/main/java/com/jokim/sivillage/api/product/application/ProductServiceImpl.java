@@ -40,54 +40,56 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto getProductByProductCode(String productCode) {
-        // todo 여러번의 join이 필요하지만.. queryDsl로 안전하게 짜보기
-        // == Product ==
-        Product product = productRepository.findByProductCode(productCode)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "Product not found with productCode: " + productCode));
 
-        // brandName 얻기
-        // 1. brandCode 얻기
-        BrandProductList brandProductList =
-            brandProductListRepository.findBrandProductListByProductCode(productCode);
-        if (brandProductList == null) {
-            //todo
-        }
-        String brandCode = brandProductList.getBrandCode();
+        return productRepositoryCustom.findProductByProductCode(productCode);
 
-        // 2. 얻은 brandCode로 brandName 얻기
-        Brand brand = brandRepository.findByBrandCode(brandCode)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "Brand not found with brandCode: " + brandCode
-            ));
-        String brandName = brand.getMainName();
-        log.info("brandName: {} " + brandName);
+        // querydsl 방식으로 대체
+//        // == Product ==
+//        Product product = productRepository.findByProductCode(productCode)
+//            .orElseThrow(() -> new EntityNotFoundException(
+//                "Product not found with productCode: " + productCode));
+//
+//        // brandName 얻기
+//        // 1. brandCode 얻기
+//        BrandProductList brandProductList =
+//            brandProductListRepository.findBrandProductListByProductCode(productCode);
+//        if (brandProductList == null) {
+//            //todo
+//        }
+//        String brandCode = brandProductList.getBrandCode();
+//
+//        // 2. 얻은 brandCode로 brandName 얻기
+//        Brand brand = brandRepository.findByBrandCode(brandCode)
+//            .orElseThrow(() -> new EntityNotFoundException(
+//                "Brand not found with brandCode: " + brandCode
+//            ));
+//        String brandName = brand.getMainName();
+//        log.info("brandName: {} " + brandName);
+//
+//        // === Hashtag ===
+//        // ProductHashtag list 얻기
+//        List<ProductHashtag> productHashtags = productHashtagRepository.findByProductCode(
+//                productCode)
+//            .orElseThrow(() -> new EntityNotFoundException(
+//                "Hashtag not found with productCode: " + productCode));
+//        // Hashtag list 얻기
+//        List<Hashtag> hashtags = productHashtags.stream().map(ProductHashtag::getHashtag).toList();
+//
+//        List<HashtagResponseVo> hashtagResponseVos = hashtags.stream().map(hashtag ->
+//            HashtagResponseVo.builder()
+//                .hashtagId(hashtag.getId())
+//                .value(hashtag.getValue())
+//                .build()
+//        ).toList();
+//        log.info("hashtagResponseVos: {}", hashtagResponseVos.toString());
+//
+//        ModelMapper modelMapper = new ModelMapper();
+//        ProductResponseDto productResponseDto
+//            = modelMapper.map(product, ProductResponseDto.class);
+//
+//        productResponseDto.setBrandName(brandName);
+//        productResponseDto.setHashTag(hashtagResponseVos);
 
-        // === Hashtag ===
-        // ProductHashtag list 얻기
-        List<ProductHashtag> productHashtags = productHashtagRepository.findByProductCode(
-                productCode)
-            .orElseThrow(() -> new EntityNotFoundException(
-                "Hashtag not found with productCode: " + productCode));
-        // Hashtag list 얻기
-        List<Hashtag> hashtags = productHashtags.stream().map(ProductHashtag::getHashtag).toList();
-
-        List<HashtagResponseVo> hashtagResponseVos = hashtags.stream().map(hashtag ->
-            HashtagResponseVo.builder()
-                .hashtagId(hashtag.getId())
-                .value(hashtag.getValue())
-                .build()
-        ).toList();
-        log.info("hashtagResponseVos: {}", hashtagResponseVos.toString());
-
-        ModelMapper modelMapper = new ModelMapper();
-        ProductResponseDto productResponseDto
-            = modelMapper.map(product, ProductResponseDto.class);
-
-        productResponseDto.setBrandName(brandName);
-        productResponseDto.setHashTag(hashtagResponseVos);
-
-        return productResponseDto;
     }
 
     @Override
