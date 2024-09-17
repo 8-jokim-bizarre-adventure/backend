@@ -1,13 +1,9 @@
 package com.jokim.sivillage.api.product.application;
 
 
-import com.jokim.sivillage.api.brand.domain.Brand;
 import com.jokim.sivillage.api.brand.infrastructure.BrandRepository;
 
-import com.jokim.sivillage.api.bridge.domain.BrandProductList;
 import com.jokim.sivillage.api.bridge.infrastructure.BrandProductListRepository;
-import com.jokim.sivillage.api.hashtag.domain.Hashtag;
-import com.jokim.sivillage.api.hashtag.domain.ProductHashtag;
 import com.jokim.sivillage.api.hashtag.infrastructure.ProductHashtagRepository;
 import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
 import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
@@ -15,16 +11,13 @@ import com.jokim.sivillage.api.product.domain.Product;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepository;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepositoryCustom;
-import com.jokim.sivillage.api.product.vo.out.HashtagResponseVo;
 import com.jokim.sivillage.common.entity.BaseResponseStatus;
 import com.jokim.sivillage.common.exception.BaseException;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.bytebuddy.asm.Advice.OffsetMapping.Target.ForField.ReadOnly;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,14 +54,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void updateProduct(String productCode,
-        UpdateProductRequestDto updateproductRequestDto) {
+    public void updateProduct(ProductRequestDto productRequestDto) {
+        // todo updateRequestDto를 따로 만들어서 해야 하지만 추후 진행하기
+        Product product = productRepository.findByProductCode(productRequestDto.getProductCode())
+            .orElseThrow(
+                () -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.")
+            );
+
+        productRepository.save(productRequestDto.toEntity(product.getId()));
+    }
+
+    @Override
+    public void deleteProduct(String productCode) {
         Product product = productRepository.findByProductCode(productCode).orElseThrow(
             () -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.")
         );
-
-        productRepository.save(updateproductRequestDto.toEntity(productCode, product.getId()));
+        productRepository.deleteById(product.getId());
     }
+
 
     // 옵션 별 상품 반환
     @Override

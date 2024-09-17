@@ -29,6 +29,18 @@ public class ProductRequestDto {
             build();
     }
 
+    public Product toEntity(Long productId) {
+        return Product.builder().
+            id(productId).
+            productCode(productCode).
+            productName(productName).
+            isOnSale(isOnSale).
+            detail(detail).
+            standardPrice(standardPrice).
+            discountPrice(discountPrice).
+            build();
+    }
+
     @Builder
     public ProductRequestDto(String productCode, String productName,
         boolean isOnSale, String detail, Double standardPrice, Double discountPrice) {

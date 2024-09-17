@@ -14,7 +14,9 @@ public interface ProductService {
 
     void saveProduct(ProductRequestDto productRequestDto);
 
-    void updateProduct(String productCode, UpdateProductRequestDto productRequestDto);
+    void updateProduct(ProductRequestDto productRequestDto);
+
+    void deleteProduct(String productCode);
 
     List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId);
 

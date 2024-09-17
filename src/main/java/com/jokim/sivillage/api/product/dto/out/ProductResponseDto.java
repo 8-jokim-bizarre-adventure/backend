@@ -1,10 +1,8 @@
 package com.jokim.sivillage.api.product.dto.out;
 
-import com.jokim.sivillage.api.hashtag.domain.Hashtag;
-import com.jokim.sivillage.api.product.vo.out.HashtagResponseVo;
+import com.jokim.sivillage.api.hashtag.vo.HashtagResponseVo;
 import com.jokim.sivillage.api.product.vo.out.ProductResponseVo;
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

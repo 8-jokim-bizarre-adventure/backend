@@ -34,6 +34,12 @@ INSERT INTO `sivillage`.`product_hashtag`
 VALUES ("1",
         "a123");
 
+INSERT INTO `sivillage`.`product_hashtag`
+(`hashtag_id`,
+ `product_code`)
+VALUES ("2",
+        "a123");
+
 INSERT INTO `sivillage`.`size`
     (`value`)
 VALUES ("big");
@@ -84,21 +90,5 @@ INSERT INTO `sivillage`.`brand_product_list`
 VALUES ("b123",
         "a123");
 
---
---
---
--- INSERT INTO `sivillage`.`color`
---     (`value`)
--- VALUES ("실버");
---
--- INSERT INTO `sivillage`.`size`
---     (`value`)
--- VALUES ("FREE");
---
--- INSERT INTO `sivillage`.`etc`
--- (`name`,
---  `value`)
--- VALUES ("소재",
---         "소가죽");
 
 

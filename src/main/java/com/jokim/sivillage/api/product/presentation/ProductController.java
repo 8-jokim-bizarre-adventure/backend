@@ -49,9 +49,10 @@ public class ProductController {
 
     // 상품 데이터 입력
     @PostMapping("/products")
-    public BaseResponse<Void> createProduct(
+    @Operation(summary = "상품 데이터 저장", description = "상품 데이터를 저장한다.")
+    public BaseResponse<Void> saveProduct(
         @RequestBody ProductRequestVo productRequestVo) {
-        log.info("productRequestVo : {} in createProduct", productRequestVo.toString());
+        log.info("productRequestVo : {} in saveProduct", productRequestVo.toString());
         ProductRequestDto productRequestDto = ProductRequestDto.toDto(productRequestVo);
         log.info("productRequestDto : in ProductController {}", productRequestDto.toString());
         productService.saveProduct(ProductRequestDto.toDto(productRequestVo));
@@ -62,12 +63,20 @@ public class ProductController {
     @Operation(summary = "상품 데이터 업데이트", description = "상품코드로 상품 데이터를 수정한다.")
     @PutMapping("/products")
     public BaseResponse<Void> updateProduct(
-        @RequestBody UpdateProductRequestVo updateProductRequestVo) {
-        log.info("productRequestVo : {}", updateProductRequestVo.toString());
-
-        productService.updateProduct(updateProductRequestVo.getProductCode(),
-            UpdateProductRequestDto.toDto(updateProductRequestVo));
+        @RequestBody ProductRequestVo productRequestVo) {
+        log.info("productRequestVo : {}", productRequestVo.toString());
+        ProductRequestDto productRequestDto = ProductRequestDto.toDto(productRequestVo);
+        productService.updateProduct(productRequestDto);
         return new BaseResponse<>();
+    }
+
+    @Operation(summary = "상품 데이터 삭제", description = "상품코드로 상품 데이터를 삭제한다.")
+    @DeleteMapping("/products/{productCode}")
+    public BaseResponse<Void> deleteProduct(@PathVariable String productCode) {
+        log.info("productCode : {}", productCode);
+        productService.deleteProduct(productCode);
+        return new BaseResponse<>();
+
     }
 
 
@@ -88,19 +97,6 @@ public class ProductController {
         log.info("productResponseVo : {}", productResponseVo.toString());
         return new BaseResponse<>(productResponseVo);
     }
-
-    //    //  전체상품보기(카테고리)
-    // 개발 중 정지
-//    @GetMapping("/products")
-//    public BaseResponse<List<ProductListResponseVo>> getProductByCategory(
-//        @RequestParam(value = "category-id") Long categoryId) {
-//        log.info("categoryId : {}", categoryId);
-//        List<ProductResponseDto> productResponseDto = productService.getProductsByCategory(
-//            categoryId);
-//
-//        return new BaseResponse<>();
-//
-//    }
 
     // 랜덤 상품 리스트 보기
 //    @GetMapping("/main/random-product")
