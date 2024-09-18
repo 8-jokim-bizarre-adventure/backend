@@ -90,5 +90,46 @@ INSERT INTO `sivillage`.`brand_product_list`
 VALUES ("b123",
         "a123");
 
+INSERT INTO `sivillage`.`review`
+(`star_point`,
+ `type`,
+ `product_code`,
+ `review_code`,
+ `uuid`,
+ `content`)
+VALUES (4,
+        "image",
+        "a123",
+        "r123",
+        "uu123",
+        "좋아요");
+
+INSERT INTO `sivillage`.`review`
+(`star_point`,
+ `type`,
+ `product_code`,
+ `review_code`,
+ `uuid`,
+ `content`)
+VALUES (2,
+        "image",
+        "a123",
+        "r124",
+        "uu124",
+        "대박");
+
+INSERT INTO `sivillage`.`review`
+(`star_point`,
+ `type`,
+ `product_code`,
+ `review_code`,
+ `uuid`,
+ `content`)
+VALUES (1,
+        "image",
+        "a123",
+        "r125",
+        "uu125",
+        "대박");
 
 

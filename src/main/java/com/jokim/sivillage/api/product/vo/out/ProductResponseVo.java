@@ -23,8 +23,8 @@ public class ProductResponseVo {
     private Integer discountRate;
     private Double amount;
     private Double price;
-    private String starPoint;
-    private Integer reviewCount;
+    private Double starPoint;
+    private Long reviewCount;
     private List<HashtagResponseVo> hashTag;
     private String detail;
 
