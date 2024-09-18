@@ -1,6 +1,5 @@
 package com.jokim.sivillage.common.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

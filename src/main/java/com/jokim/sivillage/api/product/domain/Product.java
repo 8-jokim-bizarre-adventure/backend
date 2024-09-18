@@ -25,7 +25,7 @@ public class Product {
     private String productCode;
     @Column(nullable = false, length = 255)
     private String productName;
-    @Column(nullable = false, columnDefinition = "boolean default false")
+    @Column(nullable = true, columnDefinition = "boolean default true")
     private boolean isOnSale;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String detail;
@@ -34,16 +34,5 @@ public class Product {
     @Column(nullable = false)
     private Double discountPrice;
 
-    @Builder
-    public Product(String productCode, String productName, boolean isOnSale, String detail,
-        Double standardPrice, Double discountPrice) {
-        this.productCode = productCode;
-        this.productName = productName;
-        this.isOnSale = isOnSale;
-        this.detail = detail;
-        this.standardPrice = standardPrice;
-        this.discountPrice = standardPrice;
-    }
-    
 
 }
