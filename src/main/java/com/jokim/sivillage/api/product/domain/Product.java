@@ -44,8 +44,6 @@ public class Product {
         this.standardPrice = standardPrice;
         this.discountPrice = standardPrice;
     }
+    
 
-//    public void update(UpdateProductRequestDto updateProductRequestDto) {
-////        this.brandCode = updateProductRequestDto.get
-//    }
 }

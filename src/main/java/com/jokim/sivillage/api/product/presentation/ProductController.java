@@ -81,6 +81,7 @@ public class ProductController {
 
 
     // 옵션 별  필터링 된 상품 보기
+    // todo 상품 리스트 정보 반환 구현 후 진행 예정
     @Operation
     @GetMapping("/products/options")
     public BaseResponse<List<ProductResponseVo>> getFilteredProduct(

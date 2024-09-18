@@ -34,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepositoryCustom productRepositoryCustom;
     private final BrandProductListRepository brandProductListRepository;
 
+
     @Override
     public ProductResponseDto getProductByProductCode(String productCode) {
 
@@ -41,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Transactional
     @Override
     public void saveProduct(ProductRequestDto productRequestDto) {
 
@@ -64,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(productRequestDto.toEntity(product.getId()));
     }
 
+    @Transactional
     @Override
     public void deleteProduct(String productCode) {
         Product product = productRepository.findByProductCode(productCode).orElseThrow(
@@ -75,11 +78,15 @@ public class ProductServiceImpl implements ProductService {
 
     // 옵션 별 상품 반환
     @Override
+    @Transactional
     public List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId) {
         log.info("before productRepository");
         List<Product> products = productRepositoryCustom.findFilteredProduct(sizeId, colorId,
             etcId);
         log.info("List<Product> products[0] {}", products.get(0).toString());
+//        List<ProductResponseDto> productResponseDtos = products.stream().map(
+//            ProductResponseDto
+//        )
         ModelMapper modelMapper = new ModelMapper();
         List<ProductResponseDto> productResponseDtos = products.stream()
             .map(product -> modelMapper.map(product, ProductResponseDto.class))
