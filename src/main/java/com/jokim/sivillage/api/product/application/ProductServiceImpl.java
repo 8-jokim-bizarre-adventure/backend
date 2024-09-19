@@ -14,10 +14,8 @@ import com.jokim.sivillage.common.entity.BaseResponseStatus;
 import com.jokim.sivillage.common.exception.BaseException;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -71,27 +69,26 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(product.getId());
     }
 
-
     // 옵션 별 상품 반환
-    @Override
-    @Transactional
-    public List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId) {
-        log.info("before productRepository");
-        List<Product> products = productRepositoryCustom.findFilteredProduct(sizeId, colorId,
-            etcId);
-        log.info("List<Product> products[0] {}", products.get(0).toString());
-//        List<ProductResponseDto> productResponseDtos = products.stream().map(
-//            ProductResponseDto
-//        )
-        ModelMapper modelMapper = new ModelMapper();
-        List<ProductResponseDto> productResponseDtos = products.stream()
-            .map(product -> modelMapper.map(product, ProductResponseDto.class))
-            .collect(Collectors.toList());
-
-        log.info("productResponseDtos {}", productResponseDtos);
-
-        return productResponseDtos;
-    }
+//    @Override
+//    @Transactional
+//    public List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId) {
+//        log.info("before productRepository");
+//        List<Product> products = productRepositoryCustom.findFilteredProduct(sizeId, colorId,
+//            etcId);
+//        log.info("List<Product> products[0] {}", products.get(0).toString());
+////        List<ProductResponseDto> productResponseDtos = products.stream().map(
+////            ProductResponseDto
+////        )
+//        ModelMapper modelMapper = new ModelMapper();
+//        List<ProductResponseDto> productResponseDtos = products.stream()
+//            .map(product -> modelMapper.map(product, ProductResponseDto.class))
+//            .collect(Collectors.toList());
+//
+//        log.info("productResponseDtos {}", productResponseDtos);
+//
+//        return productResponseDtos;
+//    }
 
     @Override
     public List<ProductListResponseDto> getRandomProducts(Integer count) {

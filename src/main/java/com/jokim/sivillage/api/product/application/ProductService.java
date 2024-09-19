@@ -16,7 +16,7 @@ public interface ProductService {
 
     void deleteProduct(String productCode);
 
-    List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId);
+//    List<ProductResponseDto> getFilteredProducts(Long sizeId, Long colorId, Long etcId);
 
     List<ProductListResponseDto> getRandomProducts(Integer count);
 //    List<ProductListResponseVo> getProductsByCategory(Long categoryId);

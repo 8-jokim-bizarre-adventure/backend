@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,25 +76,24 @@ public class ProductController {
 
     }
 
-
     // 옵션 별  필터링 된 상품 보기
     // todo 상품 리스트 정보 반환 구현 후 진행 예정
-    @Operation
-    @GetMapping("/products/options")
-    public BaseResponse<List<ProductResponseVo>> getFilteredProduct(
-        @RequestParam(value = "size-id") Long sizeId,
-        @RequestParam(value = "color-id") Long colorId,
-        @RequestParam(value = "etc-id") Long etcId) {
-        log.info("productSize, color, etc id : {}, {}, {}", sizeId, colorId, etcId);
-        List<ProductResponseDto> productResponseDto = productService.getFilteredProducts(sizeId,
-            colorId, etcId);
-        log.info("productResponseDto : {}", productResponseDto.toString());
-        ModelMapper modelMapper = new ModelMapper();
-        List<ProductResponseVo> productResponseVo = productResponseDto.stream()
-            .map(ProductResponseDto::toResponseVo).toList();
-        log.info("productResponseVo : {}", productResponseVo.toString());
-        return new BaseResponse<>(productResponseVo);
-    }
+//    @Operation
+//    @GetMapping("/products/options")
+//    public BaseResponse<List<ProductResponseVo>> getFilteredProduct(
+//        @RequestParam(value = "size-id") Long sizeId,
+//        @RequestParam(value = "color-id") Long colorId,
+//        @RequestParam(value = "etc-id") Long etcId) {
+//        log.info("productSize, color, etc id : {}, {}, {}", sizeId, colorId, etcId);
+//        List<ProductResponseDto> productResponseDto = productService.getFilteredProducts(sizeId,
+//            colorId, etcId);
+//        log.info("productResponseDto : {}", productResponseDto.toString());
+//        ModelMapper modelMapper = new ModelMapper();
+//        List<ProductResponseVo> productResponseVo = productResponseDto.stream()
+//            .map(ProductResponseDto::toResponseVo).toList();
+//        log.info("productResponseVo : {}", productResponseVo.toString());
+//        return new BaseResponse<>(productResponseVo);
+//    }
 
     // 랜덤 상품 리스트 보기
     @Operation(summary = "상품 리스트 보기", description = "주어진 갯수만큼 상품 리스트를 반환한다.")
