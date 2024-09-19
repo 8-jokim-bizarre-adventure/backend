@@ -1,30 +1,28 @@
 package com.jokim.sivillage.api.product.presentation;
 
 import com.jokim.sivillage.api.product.application.ProductService;
-import com.jokim.sivillage.api.product.domain.Product;
 import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
-import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
+import com.jokim.sivillage.api.product.dto.out.ProductListResponseDto;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.vo.in.ProductRequestVo;
-import com.jokim.sivillage.api.product.vo.in.UpdateProductRequestVo;
 import com.jokim.sivillage.api.product.vo.out.ProductListResponseVo;
 import com.jokim.sivillage.api.product.vo.out.ProductResponseVo;
-import com.jokim.sivillage.common.entity.BaseEntity;
 import com.jokim.sivillage.common.entity.BaseResponse;
-import com.jokim.sivillage.common.entity.CommonResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.Collections;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/v1")
 @RestController
@@ -100,20 +98,20 @@ public class ProductController {
     }
 
     // 랜덤 상품 리스트 보기
-//    @GetMapping("/main/random-product")
-//    public ResponseEntity<List<ProductResponseVo>> getRandomProduct(
-//        @RequestParam(name = "count", required = false) Integer count) {
-//        if (count == null) {
-//            count = 5;
-//        }
-//        log.info("count : {}", count);
-//
-//        List<ProductResponseDto> productResponseDto = productService.getRandomProducts(count);
-//        ModelMapper modelMapper = new ModelMapper();
-//        List<ProductResponseVo> productResponseVo = productResponseDto.stream()
-//            .map(ResponseDto -> modelMapper.map(ResponseDto, ProductResponseVo.class)).toList();
-//        return ResponseEntity.ok(productResponseVo);
-//    }
+    @Operation(summary = "상품 리스트 보기", description = "주어진 갯수만큼 상품 리스트를 반환한다.")
+    @GetMapping("/main/random-product")
+    public BaseResponse<List<ProductListResponseVo>> getRandomProduct(
+        @RequestParam(name = "count", required = false) Integer count) {
+        if (count == null) {
+            count = 5;
+        }
+        log.info("count : {}", count);
+        List<ProductListResponseDto> productListResponseDtos = productService.getRandomProducts(
+            count);
+        List<ProductListResponseVo> productListResponseVos =
+            productListResponseDtos.stream().map(ProductListResponseDto::toResponseVo).toList();
+        return new BaseResponse<>(productListResponseVos);
+    }
 
     // 정렬된 상품 보기
 //    @GetMapping("/products/sort?sort-type={sortType}")

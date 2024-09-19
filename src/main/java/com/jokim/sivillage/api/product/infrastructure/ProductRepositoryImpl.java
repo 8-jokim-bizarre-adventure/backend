@@ -5,26 +5,21 @@ import com.jokim.sivillage.api.bridge.domain.QBrandProductList;
 import com.jokim.sivillage.api.bridge.domain.QProductMediaList;
 import com.jokim.sivillage.api.hashtag.domain.QHashtag;
 import com.jokim.sivillage.api.hashtag.domain.QProductHashtag;
+import com.jokim.sivillage.api.hashtag.vo.HashtagResponseVo;
 import com.jokim.sivillage.api.media.domain.QMedia;
 import com.jokim.sivillage.api.product.domain.Product;
-//import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.jokim.sivillage.api.product.domain.QProduct;
 import com.jokim.sivillage.api.product.domain.QProductOption;
-import com.jokim.sivillage.api.product.domain.option.QColor;
-import com.jokim.sivillage.api.product.domain.option.QEtc;
-import com.jokim.sivillage.api.product.domain.option.QSize;
+import com.jokim.sivillage.api.product.dto.out.ProductListResponseDto;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
-import com.jokim.sivillage.api.hashtag.vo.HashtagResponseVo;
 import com.jokim.sivillage.api.review.domain.QReview;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Expr;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -146,5 +141,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         }
         log.info("ProductResponseDto {} in repository", productResponseDto.toString());
         return productResponseDto;
+    }
+
+    @Override
+    public List<ProductListResponseDto> getRandomProducts(Integer count) {
+        // 피드백 후 진행
+        return List.of();
     }
 }

@@ -2,26 +2,23 @@ package com.jokim.sivillage.api.product.application;
 
 
 import com.jokim.sivillage.api.brand.infrastructure.BrandRepository;
-
 import com.jokim.sivillage.api.bridge.infrastructure.BrandProductListRepository;
 import com.jokim.sivillage.api.hashtag.infrastructure.ProductHashtagRepository;
-import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
-import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
 import com.jokim.sivillage.api.product.domain.Product;
+import com.jokim.sivillage.api.product.dto.in.ProductRequestDto;
+import com.jokim.sivillage.api.product.dto.out.ProductListResponseDto;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepository;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepositoryCustom;
 import com.jokim.sivillage.common.entity.BaseResponseStatus;
 import com.jokim.sivillage.common.exception.BaseException;
 import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.internal.bytebuddy.asm.Advice.OffsetMapping.Target.ForField.ReadOnly;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +54,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void updateProduct(ProductRequestDto productRequestDto) {
-        // todo updateRequestDto를 따로 만들어서 해야 하지만 추후 진행하기
         Product product = productRepository.findByProductCode(productRequestDto.getProductCode())
             .orElseThrow(
                 () -> new IllegalArgumentException("해당 상품이 존재하지 않습니다.")
@@ -97,6 +93,12 @@ public class ProductServiceImpl implements ProductService {
         return productResponseDtos;
     }
 
+    @Override
+    public List<ProductListResponseDto> getRandomProducts(Integer count) {
+        return productRepositoryCustom.getRandomProducts(count);
+
+    }
+
     // category별 product => 작성 중 정지
 //    @Override
 //    public List<ProductListResponseVo> getProductsByCategory(Long categoryId) {
@@ -133,13 +135,6 @@ public class ProductServiceImpl implements ProductService {
 //        );
 //
 //        return List.of();
-//    }
-
-//    @Override
-//    public void deleteProduct(long id) {
-//        Product product = productRepository.findById(id).get();
-//
-//
 //    }
 
 //    @Override
