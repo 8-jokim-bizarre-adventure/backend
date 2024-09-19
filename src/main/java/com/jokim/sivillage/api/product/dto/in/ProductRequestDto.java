@@ -8,6 +8,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
+@Builder
 public class ProductRequestDto {
 
     private String productCode;
@@ -40,26 +41,11 @@ public class ProductRequestDto {
             build();
     }
 
-    @Builder
-    public ProductRequestDto(String productCode, String productName,
-        boolean isOnSale, String detail, Double standardPrice, Double discountPrice) {
-        this.productCode = productCode;
-        this.productName = productName;
-        this.isOnSale = isOnSale;
-        this.detail = detail;
-        this.standardPrice = standardPrice;
-        this.discountPrice = discountPrice;
-    }
 
     public ProductRequestDto() {
     }
 
     public static ProductRequestDto toDto(ProductRequestVo productRequestVo) {
-        // VO -> Dto 필드 그대로면 modelMapper 사용하자.
-        // null 값 담기는 오류
-//        ModelMapper modelMapper = new ModelMapper();
-//        ProductRequestDto productRequestDto = modelMapper.map(productRequestVo,
-//            ProductRequestDto.class);
         return ProductRequestDto.builder()
             .productCode(productRequestVo.getProductCode())
             .productName(productRequestVo.getProductName())

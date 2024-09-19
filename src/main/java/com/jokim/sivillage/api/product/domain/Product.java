@@ -1,14 +1,18 @@
 package com.jokim.sivillage.api.product.domain;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Builder
 @Entity
 @Getter
 @ToString
@@ -33,5 +37,69 @@ public class Product {
     @Column(nullable = false)
     private Double discountPrice;
 
+    public static ProductBuilder builder() {
+        return new ProductBuilder();
+    }
 
+
+    public static class ProductBuilder {
+
+        private Long id;
+        private String productCode;
+        private String productName;
+        private boolean isOnSale;
+        private String detail;
+        private Double standardPrice;
+        private Double discountPrice;
+
+        ProductBuilder() {
+        }
+
+        public ProductBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public ProductBuilder productCode(String productCode) {
+            this.productCode = productCode;
+            return this;
+        }
+
+        public ProductBuilder productName(String productName) {
+            this.productName = productName;
+            return this;
+        }
+
+        public ProductBuilder isOnSale(boolean isOnSale) {
+            this.isOnSale = isOnSale;
+            return this;
+        }
+
+        public ProductBuilder detail(String detail) {
+            this.detail = detail;
+            return this;
+        }
+
+        public ProductBuilder standardPrice(Double standardPrice) {
+            this.standardPrice = standardPrice;
+            return this;
+        }
+
+        public ProductBuilder discountPrice(Double discountPrice) {
+            this.discountPrice = discountPrice;
+            return this;
+        }
+
+        public Product build() {
+            return new Product(this.id, this.productCode, this.productName, this.isOnSale,
+                this.detail, this.standardPrice, this.discountPrice);
+        }
+
+        public String toString() {
+            return "Product.ProductBuilder(id=" + this.id + ", productCode=" + this.productCode
+                + ", productName=" + this.productName + ", isOnSale=" + this.isOnSale + ", detail="
+                + this.detail + ", standardPrice=" + this.standardPrice + ", discountPrice="
+                + this.discountPrice + ")";
+        }
+    }
 }
