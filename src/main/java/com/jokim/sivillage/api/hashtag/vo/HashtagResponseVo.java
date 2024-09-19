@@ -12,7 +12,6 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @ToString
-@Setter
 public class HashtagResponseVo {
 
     private Long hashtagId;
