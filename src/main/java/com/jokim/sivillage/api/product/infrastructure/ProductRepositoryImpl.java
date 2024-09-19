@@ -5,6 +5,7 @@ import com.jokim.sivillage.api.bridge.domain.QBrandProductList;
 import com.jokim.sivillage.api.bridge.domain.QProductMediaList;
 import com.jokim.sivillage.api.hashtag.domain.QHashtag;
 import com.jokim.sivillage.api.hashtag.domain.QProductHashtag;
+import com.jokim.sivillage.api.hashtag.dto.HashtagResponseDto;
 import com.jokim.sivillage.api.hashtag.vo.HashtagResponseVo;
 import com.jokim.sivillage.api.media.domain.QMedia;
 import com.jokim.sivillage.api.product.domain.Product;
@@ -13,6 +14,8 @@ import com.jokim.sivillage.api.product.domain.QProductOption;
 import com.jokim.sivillage.api.product.dto.out.ProductListResponseDto;
 import com.jokim.sivillage.api.product.dto.out.ProductResponseDto;
 import com.jokim.sivillage.api.review.domain.QReview;
+import com.jokim.sivillage.common.entity.BaseResponseStatus;
+import com.jokim.sivillage.common.exception.BaseException;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -78,7 +81,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         QMedia media = QMedia.media;
         QReview review = QReview.review;
 
-        ProductResponseDto productResponseDto = jpaQueryFactory
+        List<ProductResponseDto> productResponseDtos = jpaQueryFactory
             .select(Projections.bean(
                 ProductResponseDto.class,
                 product.productCode.as("productCode"),
@@ -118,13 +121,18 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 product.discountPrice,
                 product.detail
             )
-            .fetch().get(0);
+            .fetch();
+
+        if (productResponseDtos.isEmpty()) {
+            throw new BaseException(BaseResponseStatus.NO_EXIST_PRODUCT);
+        }
+        ProductResponseDto productResponseDto = productResponseDtos.get(0);
 
         log.info("ProductResponseDto {} in repository", productResponseDto.toString());
         // Hashtag 리스트 쿼리
-        List<HashtagResponseVo> hashtagResponseVos = jpaQueryFactory
+        List<HashtagResponseDto> hashtagResponseDtos = jpaQueryFactory
             .select(Projections.bean(
-                HashtagResponseVo.class,
+                HashtagResponseDto.class,
                 hashtag.id.as("hashtagId"),
                 hashtag.value.as("value")
             ))
@@ -132,6 +140,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             .leftJoin(hashtag).on(productHashtag.hashtag.id.eq(hashtag.id))
             .where(productHashtag.productCode.eq(productCode))
             .fetch();
+
+        hashtagResponseDtos.forEach(dto -> log.info("HashtagResponseDto: {}", dto));
+
+        List<HashtagResponseVo> hashtagResponseVos = hashtagResponseDtos
+            .stream().map(h -> h.toVo()).toList();
         hashtagResponseVos.forEach(vo -> log.info("HashtagResponseVo: {}", vo));
         log.info("hashtagResponseVos {}", hashtagResponseVos.toString());
 

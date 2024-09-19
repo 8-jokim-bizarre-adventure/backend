@@ -1,7 +1,6 @@
 package com.jokim.sivillage.api.product.domain;
 
 
-import com.jokim.sivillage.api.product.dto.in.UpdateProductRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

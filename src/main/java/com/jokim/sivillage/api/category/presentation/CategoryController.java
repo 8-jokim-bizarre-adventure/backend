@@ -8,11 +8,9 @@ import com.jokim.sivillage.api.category.vo.in.CreateCategoryRequestVo;
 import com.jokim.sivillage.api.category.vo.in.UpdateCategoryRequestVo;
 import com.jokim.sivillage.api.category.vo.out.GetCategoryResponseVo;
 import com.jokim.sivillage.common.entity.BaseResponse;
-import com.jokim.sivillage.common.entity.CommonResponseMessage;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +30,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public BaseResponse<Void> createCategory(@RequestBody CreateCategoryRequestVo createCategoryRequestVo) {
+    public BaseResponse<Void> createCategory(
+        @RequestBody CreateCategoryRequestVo createCategoryRequestVo) {
 
         log.info("categoryRequestVo: {}", createCategoryRequestVo);
         categoryService.createCategory(CategoryRequestDto.toDto(createCategoryRequestVo));
@@ -47,12 +46,14 @@ public class CategoryController {
         log.info("parentCategoryCode : {}", parentCategoryCode);
 
         return new BaseResponse<>(
-            categoryService.getCategories(parentCategoryCode).stream().map(CategoryResponseDto::toVo)
+            categoryService.getCategories(parentCategoryCode).stream()
+                .map(CategoryResponseDto::toVo)
                 .toList());
     }
 
     @PutMapping
-    public BaseResponse<Void> updateCategory(@RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
+    public BaseResponse<Void> updateCategory(
+        @RequestBody UpdateCategoryRequestVo updateCategoryRequestVo) {
 
         log.info("categoryRequestVo: {}", updateCategoryRequestVo);
         categoryService.updateCategory(CategoryRequestDto.toDto(updateCategoryRequestVo));
