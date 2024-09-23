@@ -81,16 +81,11 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer != null) {
             throw new BaseException(BaseResponseStatus.DUPLICATED_EMAIL);
         }
-
-        try{
-            String uuid = UUID.randomUUID().toString();
-            customerRepository.save(signUpRequestDto.toCustomerEntity(passwordEncoder, uuid, State.ACTIVATION));
-            customerMarketingRepository.save(signUpRequestDto.toMarketingEntity(uuid));
-            customerPolicyRepository.save(signUpRequestDto.toPolicyEntity(uuid));
-        } catch (Exception e) {
-            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        String uuid = UUID.randomUUID().toString();
+        customerRepository.save(signUpRequestDto.toCustomerEntity(
+            passwordEncoder, uuid, State.ACTIVATION));
+        customerMarketingRepository.save(signUpRequestDto.toMarketingEntity(uuid));
+        customerPolicyRepository.save(signUpRequestDto.toPolicyEntity(uuid));
     }
 
     @Override
@@ -101,13 +96,8 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer == null) {
             throw new BaseException(BaseResponseStatus.TOKEN_NOT_VALID);
         }
-
-        try {
-            // 기존 customer 엔티티 수정 후 저장
-            customerRepository.save(updateRequestDto.updateEntity(customer, passwordEncoder));
-        } catch (Exception e) {
-            throw new BaseException(BaseResponseStatus.INTERNAL_SERVER_ERROR);
-        }
+        // 기존 customer 엔티티 수정 후 저장
+        customerRepository.save(updateRequestDto.updateEntity(customer, passwordEncoder));
     }
 
     @Override
@@ -118,7 +108,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         if (customer != null) {
             // 회원이 존재할 경우 소셜 계정 연결 체크
-            Optional<SocialCustomer> socialCustomerOpt = socialCustomerRepository.findByUuidAndOauthProviderId(customer.getUuid(), oauthSignInRequestDto.getOauthProviderId());
+            Optional<SocialCustomer> socialCustomerOpt =
+                socialCustomerRepository.findByUuidAndOauthProviderId(
+                    customer.getUuid(), oauthSignInRequestDto.getOauthProviderId());
 
             if (socialCustomerOpt.isEmpty()) {
                 // 새로운 소셜 계정을 연결
