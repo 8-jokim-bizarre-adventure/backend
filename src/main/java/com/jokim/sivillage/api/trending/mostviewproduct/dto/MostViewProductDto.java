@@ -1,8 +1,8 @@
-package com.jokim.sivillage.api.trending.mostViewProduct.dto;
+package com.jokim.sivillage.api.trending.mostviewproduct.dto;
 
 import com.jokim.sivillage.api.brand.domain.Brand;
-import com.jokim.sivillage.api.trending.mostViewProduct.domain.MostViewProduct;
-import com.jokim.sivillage.api.trending.mostViewProduct.vo.MostViewProductVo;
+import com.jokim.sivillage.api.trending.mostviewproduct.domain.MostViewProduct;
+import com.jokim.sivillage.api.trending.mostviewproduct.vo.MostViewProductVo;
 import com.jokim.sivillage.api.product.domain.Product;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

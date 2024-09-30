@@ -1,9 +1,9 @@
-package com.jokim.sivillage.api.trending.product.presentation;
+package com.jokim.sivillage.api.trending.bestproduct.presentation;
 
 
-import com.jokim.sivillage.api.trending.product.application.BestProductService;
-import com.jokim.sivillage.api.trending.product.dto.BestProductResponseDto;
-import com.jokim.sivillage.api.trending.product.vo.BestProductResponseVo;
+import com.jokim.sivillage.api.trending.bestproduct.application.BestProductService;
+import com.jokim.sivillage.api.trending.bestproduct.dto.BestProductResponseDto;
+import com.jokim.sivillage.api.trending.bestproduct.vo.BestProductResponseVo;
 import com.jokim.sivillage.common.entity.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;

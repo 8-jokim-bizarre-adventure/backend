@@ -1,8 +1,8 @@
-package com.jokim.sivillage.api.trending.mostViewProduct.presentation;
+package com.jokim.sivillage.api.trending.mostviewproduct.presentation;
 
-import com.jokim.sivillage.api.trending.mostViewProduct.application.MostViewProductService;
-import com.jokim.sivillage.api.trending.mostViewProduct.dto.MostViewProductDto;
-import com.jokim.sivillage.api.trending.mostViewProduct.vo.MostViewProductVo;
+import com.jokim.sivillage.api.trending.mostviewproduct.application.MostViewProductService;
+import com.jokim.sivillage.api.trending.mostviewproduct.dto.MostViewProductDto;
+import com.jokim.sivillage.api.trending.mostviewproduct.vo.MostViewProductVo;
 import com.jokim.sivillage.common.entity.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.jokim.sivillage.api.trending.product.vo;
+package com.jokim.sivillage.api.trending.mostviewproduct.vo;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class BestProductResponseVo {
+public class MostViewProductVo {
     private String productCode;
     private Integer rankValue;
     private String productName;

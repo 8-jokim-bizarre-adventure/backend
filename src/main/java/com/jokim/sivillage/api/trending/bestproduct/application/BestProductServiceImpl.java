@@ -1,10 +1,10 @@
-package com.jokim.sivillage.api.trending.mostViewProduct.application;
+package com.jokim.sivillage.api.trending.bestproduct.application;
 
+import com.jokim.sivillage.api.trending.bestproduct.domain.BestProduct;
+import com.jokim.sivillage.api.trending.bestproduct.dto.BestProductResponseDto;
+import com.jokim.sivillage.api.trending.bestproduct.infrastructure.BestProductRepository;
 import com.jokim.sivillage.api.brand.domain.Brand;
 import com.jokim.sivillage.api.brand.infrastructure.BrandRepository;
-import com.jokim.sivillage.api.trending.mostViewProduct.domain.MostViewProduct;
-import com.jokim.sivillage.api.trending.mostViewProduct.dto.MostViewProductDto;
-import com.jokim.sivillage.api.trending.mostViewProduct.infrastructure.MostViewProductRepository;
 import com.jokim.sivillage.api.product.domain.Product;
 import com.jokim.sivillage.api.product.infrastructure.ProductRepository;
 import com.jokim.sivillage.common.entity.BaseResponseStatus;
@@ -20,26 +20,26 @@ import org.springframework.stereotype.Service;
 @ToString
 @Service
 @RequiredArgsConstructor
-public class MostViewProductServiceImpl implements MostViewProductService {
+public class BestProductServiceImpl implements BestProductService{
 
-    private final MostViewProductRepository mostViewProductRepository;
+    private final BestProductRepository bestProductRepository;
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
     @Override
-    public List<MostViewProductDto> getMostViewProduct() {
-        List<MostViewProduct> mostViewProducts = mostViewProductRepository.findAll();
+    public List<BestProductResponseDto> getBestProduct() {
+        List<BestProduct> bestProducts = bestProductRepository.findAll();
         // rankValue 기준으로 오름차순 정렬
-        return mostViewProducts.stream()
-            .sorted(Comparator.comparing(MostViewProduct::getRankValue)) // rankValue 기준 오름차순 정렬
-            .map(mostViewProduct -> {
-                Product product =productRepository.findByProductCode(mostViewProduct.getProductCode()).
+        return bestProducts.stream()
+            .sorted(Comparator.comparing(BestProduct::getRankValue)) // rankValue 기준 오름차순 정렬
+            .map(bestProduct -> {
+                Product product =productRepository.findByProductCode(bestProduct.getProductCode()).
                     orElseThrow(()->new BaseException(BaseResponseStatus.NO_EXIST_PRODUCT));
 
                 Integer discountRate = (int) Math.round(((product.getStandardPrice() - product.getDiscountPrice()) / (double) product.getStandardPrice())*100);
 
                 Brand brand = brandRepository.findByBrandCode(product.getBrandCode()).orElseThrow(()
                     -> new BaseException(BaseResponseStatus.NOT_EXIST_BRAND));
-                return MostViewProductDto.toDto(mostViewProduct, product, brand, discountRate);
+                return BestProductResponseDto.toDto(bestProduct, product, brand, discountRate);
             }) // DTO로 변환
             .toList();
     }

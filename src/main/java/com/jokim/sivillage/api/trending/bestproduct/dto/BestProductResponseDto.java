@@ -1,7 +1,7 @@
-package com.jokim.sivillage.api.trending.product.dto;
+package com.jokim.sivillage.api.trending.bestproduct.dto;
 
-import com.jokim.sivillage.api.trending.product.domain.BestProduct;
-import com.jokim.sivillage.api.trending.product.vo.BestProductResponseVo;
+import com.jokim.sivillage.api.trending.bestproduct.domain.BestProduct;
+import com.jokim.sivillage.api.trending.bestproduct.vo.BestProductResponseVo;
 import com.jokim.sivillage.api.brand.domain.Brand;
 import com.jokim.sivillage.api.product.domain.Product;
 import java.time.LocalDateTime;
