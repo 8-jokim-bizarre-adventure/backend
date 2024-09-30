@@ -1,15 +1,19 @@
 package com.jokim.sivillage.api.purchase.application;
 
+import static com.jokim.sivillage.api.purchase.domain.Progress.PAYMENT_COMPLETED;
 import static com.jokim.sivillage.common.entity.BaseResponseStatus.FAILED_TO_GENERATE_PURCHASE_CODE;
 import static com.jokim.sivillage.common.entity.BaseResponseStatus.INVALID_PURCHASE_QUANTITY_OR_PRICE;
 
 import com.jokim.sivillage.api.purchase.domain.DeliveryState;
+import com.jokim.sivillage.api.purchase.domain.Purchase;
 import com.jokim.sivillage.api.purchase.dto.PurchaseRequestDto;
+import com.jokim.sivillage.api.purchase.dto.PurchaseResponseDto;
 import com.jokim.sivillage.api.purchase.infrastructure.DeliveryStateRepository;
 import com.jokim.sivillage.api.purchase.infrastructure.PurchaseRepository;
 import com.jokim.sivillage.common.exception.BaseException;
 import com.jokim.sivillage.common.jwt.JwtTokenProvider;
 import com.jokim.sivillage.common.utils.CodeGenerator;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +40,21 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         purchaseRepository.save(purchaseRequestDto.toEntity(uuid, purchaseCode));
         deliveryStateRepository.save(DeliveryState.toEntity(uuid, purchaseCode));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<PurchaseResponseDto> getPurchaseSheet(String accessToken) {
+
+        List<Purchase> purchaseList = purchaseRepository.findAllByUuid(jwtTokenProvider
+            .validateAndGetUserUuid(accessToken));
+
+        return purchaseList.stream().map(purchase -> {
+            String progress = String.valueOf(deliveryStateRepository.findByPurchaseCode(purchase.getPurchaseCode())
+                .map(DeliveryState::getProgress).orElse(PAYMENT_COMPLETED));
+
+            return PurchaseResponseDto.toDto(purchase, progress);
+        }).toList();
     }
 
     private String generateUniquePurchaseCode() {
