@@ -69,6 +69,10 @@ public enum BaseResponseStatus {
     FAILED_TO_GENERATE_BASKET_CODE(HttpStatus.BAD_REQUEST, false, 2304, "고유한 장바구니 코드를 생성하는 데 실패했습니다."),
     NOT_EXIST_PRODUCT_OPTION(HttpStatus.NOT_FOUND, false, 2305, "상품 옵션 코드를 다시 확인해주세요."),
 
+    // Purchase
+    INVALID_PURCHASE_QUANTITY_OR_PRICE(HttpStatus.BAD_REQUEST, false, 2353, "상품 수량 또는 금액이 유효하지 않습니다."),
+    FAILED_TO_GENERATE_PURCHASE_CODE(HttpStatus.BAD_REQUEST, false, 2354, "고유한 주문 코드를 생성하는 데 실패했습니다."),
+
     // Category
     NOT_EXIST_CATEGORY(HttpStatus.NOT_FOUND, false, 2401, "존재하지 않는 카테고리입니다."),
     ALREADY_EXIST_CATEGORY_NAME(HttpStatus.BAD_REQUEST, false, 2402, "이미 존재하는 카테고리명입니다."),
