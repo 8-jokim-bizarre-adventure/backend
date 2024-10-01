@@ -1,4 +1,4 @@
-package com.jokim.sivillage.api.best.product.vo;
+package com.jokim.sivillage.api.trending.bestproduct.vo;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
