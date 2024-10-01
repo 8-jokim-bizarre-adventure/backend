@@ -6,8 +6,8 @@ import static com.jokim.sivillage.common.entity.BaseResponseStatus.INVALID_PURCH
 
 import com.jokim.sivillage.api.purchase.domain.DeliveryState;
 import com.jokim.sivillage.api.purchase.domain.Purchase;
-import com.jokim.sivillage.api.purchase.dto.PurchaseRequestDto;
-import com.jokim.sivillage.api.purchase.dto.PurchaseResponseDto;
+import com.jokim.sivillage.api.purchase.dto.in.PurchaseProductRequestDto;
+import com.jokim.sivillage.api.purchase.dto.out.PurchaseResponseDto;
 import com.jokim.sivillage.api.purchase.infrastructure.DeliveryStateRepository;
 import com.jokim.sivillage.api.purchase.infrastructure.PurchaseRepository;
 import com.jokim.sivillage.common.exception.BaseException;
@@ -30,15 +30,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Transactional
     @Override
-    public void purchaseProduct(PurchaseRequestDto purchaseRequestDto) {
+    public void purchaseProduct(PurchaseProductRequestDto purchaseProductRequestDto) {
 
-        if(purchaseRequestDto.getQuantity() <= 0 || purchaseRequestDto.getStandardPrice() < 0
-            || purchaseRequestDto.getDiscountPrice() < 0) throw new BaseException(INVALID_PURCHASE_QUANTITY_OR_PRICE);
+        if(purchaseProductRequestDto.getQuantity() <= 0 || purchaseProductRequestDto.getStandardPrice() < 0
+            || purchaseProductRequestDto.getDiscountPrice() < 0) throw new BaseException(INVALID_PURCHASE_QUANTITY_OR_PRICE);
 
-        String uuid = jwtTokenProvider.validateAndGetUserUuid(purchaseRequestDto.getAccessToken());
+        String uuid = jwtTokenProvider.validateAndGetUserUuid(purchaseProductRequestDto.getAccessToken());
         String purchaseCode = generateUniquePurchaseCode();
 
-        purchaseRepository.save(purchaseRequestDto.toEntity(uuid, purchaseCode));
+        purchaseRepository.save(purchaseProductRequestDto.toEntity(uuid, purchaseCode));
         deliveryStateRepository.save(DeliveryState.toEntity(uuid, purchaseCode));
     }
 

@@ -1,14 +1,14 @@
-package com.jokim.sivillage.api.purchase.dto;
+package com.jokim.sivillage.api.purchase.dto.in;
 
 import com.jokim.sivillage.api.purchase.domain.Purchase;
-import com.jokim.sivillage.api.purchase.vo.in.PurchaseRequestVo;
+import com.jokim.sivillage.api.purchase.vo.in.PurchaseProductRequestVo;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class PurchaseRequestDto {
+public class PurchaseProductRequestDto {
 
     private String accessToken;
     private String brandName;
@@ -20,17 +20,17 @@ public class PurchaseRequestDto {
     private String address;
     private String couponCode;
 
-    public static PurchaseRequestDto toDto(PurchaseRequestVo purchaseRequestVo, String accessToken) {
-        return PurchaseRequestDto.builder()
+    public static PurchaseProductRequestDto toDto(PurchaseProductRequestVo purchaseProductRequestVo, String accessToken) {
+        return PurchaseProductRequestDto.builder()
             .accessToken(accessToken)
-            .brandName(purchaseRequestVo.getBrandName())
-            .productName(purchaseRequestVo.getProductName())
-            .productOptionName(purchaseRequestVo.getProductOptionName())
-            .quantity(purchaseRequestVo.getQuantity())
-            .standardPrice(purchaseRequestVo.getStandardPrice())
-            .discountPrice(purchaseRequestVo.getDiscountPrice())
-            .address(purchaseRequestVo.getAddress())
-            .couponCode(purchaseRequestVo.getCouponCode())
+            .brandName(purchaseProductRequestVo.getBrandName())
+            .productName(purchaseProductRequestVo.getProductName())
+            .productOptionName(purchaseProductRequestVo.getProductOptionName())
+            .quantity(purchaseProductRequestVo.getQuantity())
+            .standardPrice(purchaseProductRequestVo.getStandardPrice())
+            .discountPrice(purchaseProductRequestVo.getDiscountPrice())
+            .address(purchaseProductRequestVo.getAddress())
+            .couponCode(purchaseProductRequestVo.getCouponCode())
             .build();
     }
 

@@ -1,4 +1,4 @@
-package com.jokim.sivillage.api.purchase.dto;
+package com.jokim.sivillage.api.purchase.dto.out;
 
 import com.jokim.sivillage.api.purchase.domain.Purchase;
 import com.jokim.sivillage.api.purchase.vo.out.GetPurchaseSheetResponseVo;

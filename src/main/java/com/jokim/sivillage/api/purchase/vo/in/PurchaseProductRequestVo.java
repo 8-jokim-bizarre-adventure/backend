@@ -3,7 +3,7 @@ package com.jokim.sivillage.api.purchase.vo.in;
 import lombok.Getter;
 
 @Getter
-public class PurchaseRequestVo {
+public class PurchaseProductRequestVo {
 
     private String brandName;
     private String productName;

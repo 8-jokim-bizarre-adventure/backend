@@ -3,9 +3,9 @@ package com.jokim.sivillage.api.purchase.presentation;
 import static com.jokim.sivillage.common.utils.TokenExtractor.extractToken;
 
 import com.jokim.sivillage.api.purchase.application.PurchaseService;
-import com.jokim.sivillage.api.purchase.dto.PurchaseRequestDto;
-import com.jokim.sivillage.api.purchase.dto.PurchaseResponseDto;
-import com.jokim.sivillage.api.purchase.vo.in.PurchaseRequestVo;
+import com.jokim.sivillage.api.purchase.dto.in.PurchaseProductRequestDto;
+import com.jokim.sivillage.api.purchase.dto.out.PurchaseResponseDto;
+import com.jokim.sivillage.api.purchase.vo.in.PurchaseProductRequestVo;
 import com.jokim.sivillage.api.purchase.vo.out.GetPurchaseSheetResponseVo;
 import com.jokim.sivillage.common.entity.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +14,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +32,9 @@ public class PurchaseController {
     @PostMapping
     public BaseResponse<Void> purchaseProduct(
         @RequestHeader("Authorization") String authorizationHeader,
-        @RequestBody PurchaseRequestVo purchaseRequestVo) {
+        @RequestBody PurchaseProductRequestVo purchaseProductRequestVo) {
 
-        purchaseService.purchaseProduct(PurchaseRequestDto.toDto(purchaseRequestVo,
+        purchaseService.purchaseProduct(PurchaseProductRequestDto.toDto(purchaseProductRequestVo,
             extractToken(authorizationHeader)));
         return new BaseResponse<>();
     }
