@@ -1,22 +1,29 @@
 package com.jokim.sivillage.api.customer.domain;
 
+import com.jokim.sivillage.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+
 
 @Getter
 @Entity
+@ToString
+@Builder
 @NoArgsConstructor
-public class Customer {
+@AllArgsConstructor
+public class Customer extends BaseEntity implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Comment("UUID")
+    @Comment("회원 UUID")
     @Column(nullable = false, length = 36)
     private String uuid;
 
@@ -39,22 +46,47 @@ public class Customer {
     @Column(nullable = false, length = 20)
     private String phone;
 
-    @Builder
-    public Customer(
-            Long id,
-            String uuid,
-            String email,
-            String password,
-            String name,
-            Date birth,
-            String phone
-    ) {
-        this.id = id;
-        this.uuid = uuid;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.birth = birth;
-        this.phone = phone;
+    @Comment("회원상태")
+    @Column(nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    private State state;
+
+    @Comment("회원주소")
+    @Column(length = 200)
+    private String address;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.uuid;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
